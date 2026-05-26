@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>PazientiSubito — Promozione Digitale per Studi Medici</title>
+  <meta name="description" content="Partner di marketing sanitario specializzato. Oltre 230 strutture mediche private in Italia."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet"/>
+
+  <style>
+  /* ─────────────────────────────────────
+     TOKENS
+  ───────────────────────────────────── */
+  :root {
+    --mint:      #05E9B5;
+    --mint-dim:  #00C49A;
+    --bg:        #060912;
+    --surface:   rgba(255,255,255,.035);
+    --border:    rgba(255,255,255,.07);
+    --border-s:  rgba(255,255,255,.04);
+    --t1:        #E8EEFF;
+    --t2:        #5C6E90;
+    --t3:        #2F3C55;
+    --green:     #10B981;
+    --amber:     #F59E0B;
+  }
+
+  /* ─────────────────────────────────────
+     RESET
+  ───────────────────────────────────── */
+  *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body {
+    font-family:'Inter',system-ui,sans-serif;
+    background:var(--bg);
+    color:var(--t1);
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+    line-height:1.6;
+  }
+  ::-webkit-scrollbar { width:4px; }
+  ::-webkit-scrollbar-track { background:var(--bg); }
+  ::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+
+  /* ─────────────────────────────────────
+     LAYOUT
+  ───────────────────────────────────── */
+  .w  { max-width:1140px; margin:0 auto; padding:0 36px; }
+  .ws { max-width:800px;  margin:0 auto; padding:0 36px; }
+
+  /* ─────────────────────────────────────
+     TYPOGRAPHY SYSTEM
+  ───────────────────────────────────── */
+  .label {
+    font-size:11px; font-weight:600;
+    letter-spacing:2.5px; text-transform:uppercase;
+    color:var(--mint);
+  }
+
+  h1 {
+    font-size:clamp(54px,7.5vw,98px);
+    font-weight:800;
+    letter-spacing:-3.5px;
+    line-height:1.0;
+    color:var(--t1);
+  }
+  h2 {
+    font-size:clamp(34px,4.5vw,56px);
+    font-weight:700;
+    letter-spacing:-2px;
+    line-height:1.08;
+    color:var(--t1);
+  }
+  h3 {
+    font-size:17px; font-weight:700;
+    letter-spacing:-.2px; line-height:1.35;
+  }
+  p { line-height:1.75; }
+
+  .text-mint  { color:var(--mint); }
+  .text-muted { color:var(--t2); }
+  .text-center { text-align:center; }
+
+  /* ─────────────────────────────────────
+     ANIMATIONS
+  ───────────────────────────────────── */
+  .fu {
+    opacity:0; transform:translateY(22px);
+    transition:opacity .65s cubic-bezier(.16,1,.3,1),
+                transform .65s cubic-bezier(.16,1,.3,1);
+  }
+  .fu.d1 { transition-delay:.1s; }
+  .fu.d2 { transition-delay:.2s; }
+  .fu.d3 { transition-delay:.3s; }
+  .fu.vis { opacity:1; transform:none; }
+
+  /* ─────────────────────────────────────
+     BUTTONS
+  ───────────────────────────────────── */
+  .btn-primary {
+    display:inline-flex; align-items:center; gap:9px;
+    background:var(--mint);
+    color:#040A14;
+    font-size:15px; font-weight:700;
+    padding:15px 28px;
+    border-radius:9px;
+    text-decoration:none;
+    transition:background .2s, transform .2s, box-shadow .2s;
+  }
+  .btn-primary:hover {
+    background:#1DFFC5;
+    transform:translateY(-1px);
+    box-shadow:0 8px 32px rgba(5,233,181,.25);
+  }
+  .btn-link {
+    display:inline-flex; align-items:center; gap:7px;
+    color:var(--t2); font-size:15px; font-weight:500;
+    text-decoration:none;
+    transition:color .2s;
+  }
+  .btn-link:hover { color:var(--t1); }
+  .btn-link svg { transition:transform .2s; }
+  .btn-link:hover svg { transform:translateX(3px); }
+
+  /* ─────────────────────────────────────
+     NAV
+  ───────────────────────────────────── */
+  #nav {
+    position:fixed; top:0; left:0; right:0; z-index:500;
+    padding:20px 0;
+    transition:padding .3s, background .3s, border-color .3s;
+  }
+  #nav.stuck {
+    padding:13px 0;
+    background:rgba(6,9,18,.9);
+    backdrop-filter:blur(24px);
+    -webkit-backdrop-filter:blur(24px);
+    border-bottom:1px solid var(--border-s);
+  }
+  .nav-row {
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .nav-logo img { height:36px; display:block; }
+  .nav-links {
+    display:flex; align-items:center; gap:36px; list-style:none;
+  }
+  .nav-links a {
+    color:var(--t2); text-decoration:none;
+    font-size:14px; font-weight:500;
+    transition:color .2s;
+  }
+  .nav-links a:hover { color:var(--t1); }
+  .nav-cta {
+    color:var(--t1); font-size:14px; font-weight:600;
+    text-decoration:none;
+    border:1px solid var(--border);
+    padding:9px 20px; border-radius:8px;
+    transition:border-color .2s, background .2s;
+  }
+  .nav-cta:hover {
+    border-color:rgba(5,233,181,.3);
+    background:rgba(5,233,181,.05);
+  }
+
+  /* ─────────────────────────────────────
+     HERO
+  ───────────────────────────────────── */
+  .hero {
+    min-height:100vh; display:flex; align-items:center;
+    padding:160px 0 100px;
+    position:relative; overflow:hidden;
+  }
+  .hero::before {
+    content:'';
+    position:absolute; top:-30%; left:50%; width:900px; height:900px;
+    transform:translateX(-50%);
+    border-radius:50%;
+    background:radial-gradient(circle,rgba(5,233,181,.08) 0%,transparent 65%);
+    pointer-events:none;
+  }
+  /* subtle dot grid */
+  .hero::after {
+    content:'';
+    position:absolute; inset:0; pointer-events:none;
+    background-image:radial-gradient(circle, rgba(255,255,255,.055) 1px, transparent 1px);
+    background-size:44px 44px;
+    mask-image:radial-gradient(ellipse 75% 80% at 50% 35%, black 0%, transparent 70%);
+  }
+  .hero-inner { position:relative; z-index:2; }
+  .hero-badge {
+    display:inline-flex; align-items:center; gap:9px;
+    border:1px solid rgba(5,233,181,.2);
+    background:rgba(5,233,181,.06);
+    color:var(--mint);
+    padding:7px 16px; border-radius:100px;
+    font-size:12px; font-weight:600; letter-spacing:.3px;
+    margin-bottom:36px;
+  }
+  .pulse-dot {
+    width:6px; height:6px; border-radius:50%; background:var(--mint);
+    animation:pdot 2.4s ease-in-out infinite;
+    flex-shrink:0;
+  }
+  @keyframes pdot {
+    0%,100% { opacity:1; transform:scale(1); }
+    50%      { opacity:.3; transform:scale(1.7); }
+  }
+  .hero h1 { margin-bottom:26px; }
+  .hero-sub {
+    font-size:18px; color:var(--t2);
+    line-height:1.78; max-width:560px;
+    margin-bottom:44px;
+  }
+  .hero-actions { display:flex; gap:20px; align-items:center; flex-wrap:wrap; }
+  .hero-rule {
+    display:flex; gap:36px; align-items:center;
+    margin-top:60px; padding-top:44px;
+    border-top:1px solid var(--border-s);
+    flex-wrap:wrap;
+  }
+  .hero-rule-stat { }
+  .hero-rule-num {
+    font-size:24px; font-weight:800; letter-spacing:-.8px;
+    color:var(--t1);
+  }
+  .hero-rule-num em { font-style:normal; color:var(--mint); }
+  .hero-rule-lbl { font-size:12px; color:var(--t3); margin-top:2px; font-weight:500; }
+  .hero-rule-sep { width:1px; height:32px; background:var(--border); flex-shrink:0; }
+
+  /* ─────────────────────────────────────
+     SECTION WRAPPER
+  ───────────────────────────────────── */
+  .section { padding:130px 0; }
+  .section + .section { border-top:1px solid var(--border-s); }
+  .section-head { margin-bottom:72px; }
+  .section-head .label { display:block; margin-bottom:16px; }
+  .section-head h2 { max-width:640px; }
+  .section-head.center h2 { margin:0 auto; max-width:none; }
+  .section-head p {
+    color:var(--t2); font-size:17px;
+    max-width:520px; margin-top:16px; line-height:1.75;
+  }
+  .section-head.center p { margin:16px auto 0; text-align:center; }
+
+  /* ─────────────────────────────────────
+     CLIENT STRIP
+  ───────────────────────────────────── */
+  .strip {
+    border-top:1px solid var(--border-s);
+    border-bottom:1px solid var(--border-s);
+    padding:26px 0;
+  }
+  .strip-label {
+    text-align:center;
+    font-size:11px; font-weight:600; letter-spacing:2px;
+    text-transform:uppercase; color:var(--t3);
+    margin-bottom:22px;
+  }
+  .strip-row {
+    display:flex; justify-content:center;
+    flex-wrap:wrap; gap:12px 36px;
+    max-width:900px; margin:0 auto;
+  }
+  .strip-item {
+    font-size:13px; font-weight:600; color:var(--t3);
+    letter-spacing:.3px;
+  }
+
+  /* ─────────────────────────────────────
+     STATS
+  ───────────────────────────────────── */
+  .stats-section {
+    padding:140px 0;
+    position:relative;
+    border-top:1px solid var(--border-s);
+    border-bottom:1px solid var(--border-s);
+    overflow:hidden;
+  }
+  .stats-section::before {
+    content:'';
+    position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(ellipse 60% 80% at 50% 50%,rgba(5,233,181,.055) 0%,transparent 65%);
+  }
+  .stats-grid {
+    display:grid; grid-template-columns:repeat(3,1fr);
+    position:relative; z-index:2;
+  }
+  .stats-grid::before,
+  .stats-grid::after {
+    content:'';
+    position:absolute; top:20%; bottom:20%; width:1px; background:var(--border-s);
+  }
+  .stats-grid::before { left:33.33%; }
+  .stats-grid::after  { left:66.66%; }
+  .stat-col {
+    text-align:center;
+    padding:20px 48px 20px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+  }
+  .stat-n {
+    font-size:clamp(88px,12vw,150px);
+    font-weight:800;
+    letter-spacing:-6px;
+    line-height:.9;
+    background:linear-gradient(170deg, #E8EEFF 25%, var(--mint) 100%);
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    margin-bottom:18px;
+  }
+  .stat-d {
+    font-size:15px; color:var(--t2); font-weight:500;
+    max-width:200px; line-height:1.5;
+  }
+
+  /* ─────────────────────────────────────
+     APPROCCIO
+  ───────────────────────────────────── */
+  .approach-grid {
+    display:grid; grid-template-columns:1fr 1fr;
+    gap:100px; align-items:start;
+  }
+  .approach-left h2 { margin-bottom:28px; }
+  .approach-left p { font-size:16px; color:var(--t2); line-height:1.8; }
+  .approach-right { display:flex; flex-direction:column; gap:1px; }
+  .approach-item {
+    padding:28px 0;
+    border-bottom:1px solid var(--border-s);
+  }
+  .approach-item:first-child { border-top:1px solid var(--border-s); }
+  .approach-num {
+    font-size:11px; font-weight:700; letter-spacing:2px;
+    color:var(--mint); margin-bottom:10px;
+  }
+  .approach-item h3 { margin-bottom:10px; }
+  .approach-item p { font-size:14px; color:var(--t2); line-height:1.72; }
+
+  /* ─────────────────────────────────────
+     SERVIZI
+  ───────────────────────────────────── */
+  .svc-grid {
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:1px; background:var(--border-s);
+    border:1px solid var(--border-s); border-radius:18px; overflow:hidden;
+  }
+  .svc-cell {
+    background:var(--bg);
+    padding:36px 32px;
+    transition:background .25s;
+  }
+  .svc-cell:hover { background:rgba(255,255,255,.025); }
+  .svc-ico {
+    width:42px; height:42px; border-radius:10px;
+    background:rgba(5,233,181,.08);
+    border:1px solid rgba(5,233,181,.12);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:22px;
+  }
+  .svc-ico svg {
+    width:20px; height:20px;
+    stroke:var(--mint); fill:none;
+    stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round;
+  }
+  .svc-cell h3 { margin-bottom:10px; }
+  .svc-cell p  { font-size:14px; color:var(--t2); line-height:1.72; }
+
+  /* ─────────────────────────────────────
+     RISULTATI
+  ───────────────────────────────────── */
+  .cases-grid {
+    display:grid; grid-template-columns:repeat(3,1fr); gap:20px;
+  }
+  .case-card {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px; padding:32px;
+    display:flex; flex-direction:column; gap:0;
+    transition:border-color .25s;
+  }
+  .case-card:hover { border-color:rgba(5,233,181,.2); }
+  .case-spec {
+    font-size:11px; font-weight:700; letter-spacing:2px;
+    text-transform:uppercase; color:var(--mint-dim);
+    margin-bottom:10px;
+  }
+  .case-name { font-size:16px; font-weight:700; margin-bottom:8px; }
+  .case-ctx  { font-size:13px; color:var(--t2); line-height:1.65; margin-bottom:28px; }
+  .case-metrics { display:flex; flex-direction:column; gap:10px; flex:1; }
+  .case-row {
+    display:flex; justify-content:space-between; align-items:baseline;
+    padding-bottom:10px; border-bottom:1px solid var(--border-s);
+  }
+  .case-row:last-child { border-bottom:none; padding-bottom:0; }
+  .case-row-label { font-size:12px; color:var(--t2); }
+  .case-row-val {
+    font-size:20px; font-weight:800; letter-spacing:-1px;
+    color:var(--t1);
+  }
+  .case-footer {
+    margin-top:24px; padding-top:20px;
+    border-top:1px solid var(--border-s);
+    font-size:12px; color:var(--t3);
+  }
+
+  /* ─────────────────────────────────────
+     SPECIALIZZAZIONI
+  ───────────────────────────────────── */
+  .spec-layout {
+    display:grid; grid-template-columns:1fr 2fr; gap:80px; align-items:start;
+  }
+  .spec-big-num {
+    font-size:clamp(72px,10vw,120px);
+    font-weight:800; letter-spacing:-5px; line-height:.9;
+    background:linear-gradient(160deg,#E8EEFF 30%,var(--mint));
+    -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+    display:block; margin-bottom:16px;
+  }
+  .spec-big-sub { font-size:16px; color:var(--t2); line-height:1.7; }
+  .spec-cloud {
+    display:flex; flex-wrap:wrap; gap:9px; padding-top:4px;
+  }
+  .spec-tag {
+    font-size:13px; font-weight:500; color:var(--t2);
+    border:1px solid var(--border);
+    padding:8px 16px; border-radius:100px;
+    transition:border-color .2s, color .2s, background .2s;
+    cursor:default;
+  }
+  .spec-tag:hover {
+    border-color:rgba(5,233,181,.25);
+    color:var(--t1);
+    background:rgba(5,233,181,.04);
+  }
+
+  /* ─────────────────────────────────────
+     TESTIMONIANZE
+  ───────────────────────────────────── */
+  .testi-grid {
+    display:grid; grid-template-columns:repeat(3,1fr); gap:20px;
+  }
+  .testi-card {
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:16px; padding:32px;
+    display:flex; flex-direction:column;
+    transition:border-color .25s;
+  }
+  .testi-card:hover { border-color:rgba(5,233,181,.18); }
+  .stars-row { display:flex; gap:3px; margin-bottom:22px; }
+  .stars-row svg { width:14px; height:14px; fill:var(--amber); stroke:none; }
+  .testi-q {
+    font-size:15px; font-style:italic;
+    color:var(--t2); line-height:1.78;
+    flex:1; margin-bottom:28px;
+  }
+  .testi-author {
+    display:flex; align-items:center; gap:13px;
+    padding-top:22px; border-top:1px solid var(--border-s);
+  }
+  .testi-av {
+    width:40px; height:40px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:800; flex-shrink:0;
+  }
+  .testi-name { font-size:14px; font-weight:700; }
+  .testi-role { font-size:12px; color:var(--t3); margin-top:2px; }
+
+  /* ─────────────────────────────────────
+     FAQ
+  ───────────────────────────────────── */
+  .faq-list {
+    max-width:720px; margin:0 auto;
+    display:flex; flex-direction:column;
+    border-top:1px solid var(--border-s);
+  }
+  .faq-item { border-bottom:1px solid var(--border-s); }
+  .faq-q {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:24px 0; cursor:pointer; gap:20px;
+    font-size:15px; font-weight:600;
+    user-select:none; transition:color .2s;
+  }
+  .faq-q:hover { color:var(--mint); }
+  .faq-icon {
+    width:24px; height:24px; flex-shrink:0;
+    border:1px solid var(--border);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:16px; color:var(--t2);
+    transition:transform .3s, border-color .3s, color .3s;
+  }
+  .faq-item.open .faq-icon {
+    transform:rotate(45deg);
+    border-color:var(--mint);
+    color:var(--mint);
+  }
+  .faq-ans { max-height:0; overflow:hidden; transition:max-height .35s ease; }
+  .faq-ans-inner { padding:0 0 24px; font-size:14px; color:var(--t2); line-height:1.78; }
+
+  /* ─────────────────────────────────────
+     MARQUEE
+  ───────────────────────────────────── */
+  .mq-wrap { overflow:hidden; border-top:1px solid var(--border-s); padding:16px 0; }
+  .mq-track {
+    display:flex; gap:0;
+    animation:mq 30s linear infinite;
+    width:max-content;
+  }
+  .mq-track:hover { animation-play-state:paused; }
+  @keyframes mq { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  .mq-item {
+    display:inline-flex; align-items:center; gap:10px;
+    padding:0 28px; font-size:12px; font-weight:500;
+    color:var(--t3); white-space:nowrap; letter-spacing:.5px;
+  }
+  .mq-sep { width:3px; height:3px; border-radius:50%; background:var(--t3); flex-shrink:0; }
+
+  /* ─────────────────────────────────────
+     CTA FINALE
+  ───────────────────────────────────── */
+  .cta-section {
+    padding:160px 0;
+    position:relative; overflow:hidden;
+    border-top:1px solid var(--border-s);
+  }
+  .cta-section::before {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(ellipse 55% 65% at 50% 50%,rgba(5,233,181,.07) 0%,transparent 65%);
+    pointer-events:none;
+  }
+  .cta-inner {
+    text-align:center; max-width:660px;
+    margin:0 auto; position:relative; z-index:2;
+  }
+  .cta-inner h2 {
+    font-size:clamp(42px,6vw,72px);
+    font-weight:800; letter-spacing:-3px; line-height:1.02;
+    margin-bottom:22px;
+  }
+  .cta-inner p { font-size:17px; color:var(--t2); line-height:1.72; margin-bottom:50px; }
+  .cta-actions { display:flex; gap:18px; justify-content:center; flex-wrap:wrap; }
+  .cta-note { margin-top:24px; font-size:12px; color:var(--t3); }
+
+  /* ─────────────────────────────────────
+     FOOTER
+  ───────────────────────────────────── */
+  footer {
+    padding:64px 0 40px;
+    border-top:1px solid var(--border-s);
+  }
+  .footer-grid {
+    display:grid; grid-template-columns:2fr 1fr 1fr 1fr;
+    gap:56px; margin-bottom:52px;
+  }
+  .footer-logo img { height:34px; display:block; margin-bottom:14px; }
+  .footer-about { font-size:14px; color:var(--t2); line-height:1.7; max-width:240px; }
+  .footer-col h4 {
+    font-size:11px; font-weight:700; letter-spacing:2px;
+    text-transform:uppercase; color:var(--t3);
+    margin-bottom:18px;
+  }
+  .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:10px; }
+  .footer-col a {
+    color:var(--t2); text-decoration:none;
+    font-size:14px; transition:color .2s;
+  }
+  .footer-col a:hover { color:var(--t1); }
+  .footer-bottom {
+    display:flex; justify-content:space-between; align-items:center;
+    padding-top:28px; border-top:1px solid var(--border-s);
+    flex-wrap:wrap; gap:12px;
+  }
+  .footer-copy { font-size:12px; color:var(--t3); }
+
+  /* ─────────────────────────────────────
+     RESPONSIVE
+  ───────────────────────────────────── */
+  @media(max-width:1024px){
+    .approach-grid { grid-template-columns:1fr; gap:56px; }
+    .svc-grid { grid-template-columns:repeat(2,1fr); }
+    .cases-grid { grid-template-columns:1fr; max-width:540px; margin:0 auto; }
+    .spec-layout { grid-template-columns:1fr; gap:40px; }
+    .testi-grid { grid-template-columns:1fr; max-width:520px; margin:0 auto; }
+    .footer-grid { grid-template-columns:1fr 1fr; gap:40px; }
+  }
+  @media(max-width:768px){
+    .w,.ws { padding:0 22px; }
+    #nav .nav-links { display:none; }
+    .hero { padding:130px 0 80px; }
+    h1 { letter-spacing:-2.5px; }
+    .stats-grid { grid-template-columns:1fr; }
+    .stats-grid::before,.stats-grid::after { display:none; }
+    .stat-col { padding:32px; border-bottom:1px solid var(--border-s); }
+    .stat-col:last-child { border-bottom:none; }
+    .svc-grid { grid-template-columns:1fr; }
+    .hero-rule { gap:20px; }
+    .hero-rule-sep { display:none; }
+    .footer-grid { grid-template-columns:1fr; }
+    .footer-bottom { flex-direction:column; text-align:center; }
+  }
+
+  /* ─────────────────────────────────────
+     EXCLUSIVITY SECTION
+  ───────────────────────────────────── */
+  .excl-section { padding:130px 0; border-top:1px solid var(--border-s); }
+  .excl-grid { display:grid; grid-template-columns:1fr 1fr; gap:100px; align-items:center; }
+  .excl-left h2 { margin-bottom:22px; }
+  .excl-left > p { font-size:16px; color:var(--t2); line-height:1.8; max-width:420px; }
+  .excl-criteria { display:flex; flex-direction:column; gap:12px; }
+  .excl-item {
+    display:flex; align-items:center; gap:16px;
+    padding:18px 22px;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:12px; transition:border-color .25s;
+  }
+  .excl-item:hover { border-color:rgba(5,233,181,.2); }
+  .excl-check {
+    width:30px; height:30px; border-radius:50%; flex-shrink:0;
+    background:rgba(5,233,181,.08); border:1px solid rgba(5,233,181,.2);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .excl-check svg { width:14px; height:14px; stroke:var(--mint); fill:none; stroke-width:2.5; stroke-linecap:round; stroke-linejoin:round; }
+  .excl-item-text { font-size:14px; font-weight:500; color:var(--t2); line-height:1.5; }
+
+  /* ─────────────────────────────────────
+     CANDIDATURA / QUESTIONNAIRE
+  ───────────────────────────────────── */
+  .form-section { padding:130px 0; border-top:1px solid var(--border-s); }
+  .form-layout { display:grid; grid-template-columns:1fr 1.5fr; gap:100px; align-items:start; }
+  .form-sticky { position:sticky; top:110px; }
+  .form-sticky h2 { margin-bottom:20px; }
+  .form-sticky > p { font-size:15px; color:var(--t2); line-height:1.82; }
+  .form-note {
+    margin-top:28px; padding:18px 20px;
+    background:rgba(5,233,181,.05); border:1px solid rgba(5,233,181,.12);
+    border-radius:11px; font-size:13px; color:var(--t2); line-height:1.65;
+  }
+  .form-note strong { color:var(--t1); display:block; margin-bottom:4px; }
+
+  .q-form { display:flex; flex-direction:column; gap:18px; }
+  .q-group { display:flex; flex-direction:column; gap:7px; }
+  .q-label {
+    font-size:10px; font-weight:700; letter-spacing:2.5px;
+    text-transform:uppercase; color:var(--t3);
+  }
+  .q-input, .q-select, .q-textarea {
+    background:rgba(255,255,255,.04); border:1px solid var(--border);
+    border-radius:10px; padding:13px 16px;
+    font-size:14px; font-weight:500; color:var(--t1);
+    font-family:'Inter',system-ui,sans-serif; width:100%;
+    transition:border-color .2s, background .2s; outline:none;
+    -webkit-appearance:none;
+  }
+  .q-input::placeholder, .q-textarea::placeholder { color:var(--t3); }
+  .q-input:focus, .q-select:focus, .q-textarea:focus {
+    border-color:rgba(5,233,181,.35);
+    background:rgba(5,233,181,.03);
+  }
+  .q-select {
+    cursor:pointer;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235C6E90' stroke-width='2' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 14px center;
+    background-color:rgba(255,255,255,.04);
+    padding-right:42px;
+  }
+  .q-select option { background:#06091A; color:var(--t1); }
+  .q-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .q-divider { height:1px; background:var(--border-s); }
+  .q-submit {
+    display:flex; align-items:center; justify-content:center; gap:11px;
+    background:var(--mint); color:#030A10;
+    font-size:15px; font-weight:700;
+    padding:16px 28px; border-radius:10px;
+    border:none; cursor:pointer; width:100%;
+    font-family:'Inter',system-ui,sans-serif;
+    transition:background .2s, transform .2s, box-shadow .2s;
+    margin-top:4px; letter-spacing:-.2px;
+  }
+  .q-submit:hover {
+    background:#1DFFC5; transform:translateY(-1px);
+    box-shadow:0 8px 32px rgba(5,233,181,.28);
+  }
+  .q-required { font-size:11px; color:var(--t3); text-align:center; margin-top:10px; }
+
+  /* ─────────────────────────────────────
+     CALENDAR EMBED
+  ───────────────────────────────────── */
+  .cal-section { padding:130px 0; border-top:1px solid var(--border-s); }
+  .cal-layout { display:grid; grid-template-columns:1fr 2.2fr; gap:80px; align-items:start; }
+  .cal-left { position:sticky; top:110px; }
+  .cal-left h2 { margin-bottom:16px; }
+  .cal-left p { font-size:15px; color:var(--t2); line-height:1.8; }
+  .cal-embed-wrap {
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:18px; overflow:hidden; min-height:580px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .cal-placeholder { text-align:center; padding:60px 32px; }
+  .cal-placeholder-icon {
+    width:48px; height:48px; border-radius:13px; margin:0 auto 18px;
+    background:var(--surface); border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .cal-placeholder-icon svg { width:22px; height:22px; stroke:var(--t3); fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round; }
+  .cal-placeholder h3 { font-size:15px; font-weight:600; color:var(--t2); margin-bottom:8px; }
+  .cal-placeholder p { font-size:13px; color:var(--t3); line-height:1.65; max-width:280px; margin:0 auto; }
+  .cal-placeholder code {
+    display:inline-block; margin-top:16px;
+    background:rgba(255,255,255,.05); border:1px solid var(--border);
+    border-radius:6px; padding:4px 10px;
+    font-size:12px; color:var(--t3); font-family:monospace;
+  }
+
+  /* ─────────────────────────────────────
+     FLOATING WHATSAPP
+  ───────────────────────────────────── */
+  .wa-float {
+    position:fixed; bottom:28px; right:28px; z-index:600;
+    display:flex; flex-direction:column; align-items:flex-end; gap:10px;
+  }
+  .wa-badge {
+    background:rgba(6,9,18,.95);
+    border:1px solid var(--border);
+    backdrop-filter:blur(16px);
+    color:var(--t2); font-size:12px; font-weight:500;
+    padding:8px 14px; border-radius:100px;
+    white-space:nowrap; line-height:1.4;
+    animation:wapulse 4s ease-in-out infinite;
+    cursor:default;
+  }
+  @keyframes wapulse { 0%,100%{opacity:.65} 50%{opacity:1} }
+  .wa-btn {
+    width:54px; height:54px; border-radius:50%;
+    background:#25D366;
+    display:flex; align-items:center; justify-content:center;
+    text-decoration:none;
+    box-shadow:0 4px 20px rgba(37,211,102,.3);
+    transition:transform .2s, box-shadow .2s;
+  }
+  .wa-btn:hover {
+    transform:scale(1.08) translateY(-2px);
+    box-shadow:0 8px 30px rgba(37,211,102,.45);
+  }
+  .wa-btn svg { width:26px; height:26px; fill:#fff; }
+
+  @media(max-width:1024px){
+    .excl-grid { grid-template-columns:1fr; gap:56px; }
+    .form-layout { grid-template-columns:1fr; gap:56px; }
+    .form-sticky { position:static; }
+    .cal-layout { grid-template-columns:1fr; gap:48px; }
+    .cal-left { position:static; }
+  }
+  @media(max-width:768px){
+    .q-row { grid-template-columns:1fr; }
+    .wa-float { bottom:20px; right:20px; }
+  }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════
+     NAVIGATION
+══════════════════════════ -->
+<nav id="nav">
+  <div class="w nav-row">
+    <a href="#">
+      <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/GcdgpbV6KX63qU9d1siH/media/685fbfae9aefd62c5fb05886.png"
+           alt="PazientiSubito" style="height:36px;display:block"/>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#approccio">Approccio</a></li>
+      <li><a href="#servizi">Servizi</a></li>
+      <li><a href="#risultati">Risultati</a></li>
+      <li><a href="#specializzazioni">Specializzazioni</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <a href="#contatto" class="nav-cta">Contattaci</a>
+  </div>
+</nav>
+
+
+<!-- ══════════════════════════
+     HERO
+══════════════════════════ -->
+<section class="hero">
+  <div class="w hero-inner">
+    <div class="hero-badge fu">
+      <span class="pulse-dot"></span>
+      Partner certificato per la medicina privata italiana
+    </div>
+
+    <h1 class="fu">
+      Promozione medica<br>
+      di <span class="text-mint">precisione.</span>
+    </h1>
+
+    <p class="hero-sub fu d1">
+      PazientiSubito affianca cliniche e studi medici privati con strategie
+      di acquisizione pazienti su misura, interamente misurabili
+      e conformi a ogni normativa sanitaria vigente.
+    </p>
+
+    <div class="hero-actions fu d2">
+      <a href="#contatto" class="btn-primary">
+        Parlaci del tuo studio
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#risultati" class="btn-link">
+        Vedi i risultati
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="hero-rule fu d3">
+      <div class="hero-rule-stat">
+        <div class="hero-rule-num"><em>230</em>+</div>
+        <div class="hero-rule-lbl">Strutture mediche</div>
+      </div>
+      <div class="hero-rule-sep"></div>
+      <div class="hero-rule-stat">
+        <div class="hero-rule-num"><em>21</em>+</div>
+        <div class="hero-rule-lbl">Branche specialistiche</div>
+      </div>
+      <div class="hero-rule-sep"></div>
+      <div class="hero-rule-stat">
+        <div class="hero-rule-num"><em>7</em> gg</div>
+        <div class="hero-rule-lbl">Ai primi risultati</div>
+      </div>
+      <div class="hero-rule-sep"></div>
+      <div class="hero-rule-stat">
+        <div class="hero-rule-num"><em>4.9</em> ★</div>
+        <div class="hero-rule-lbl">Media clienti</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════
+     CLIENT STRIP
+══════════════════════════ -->
+<div class="strip">
+  <p class="strip-label">Tra le strutture che ci hanno scelto</p>
+  <div class="strip-row">
+    <span class="strip-item">Clinica Roma Sud</span>
+    <span class="strip-item">Studio Medico Milano</span>
+    <span class="strip-item">Centro Salute Napoli</span>
+    <span class="strip-item">Poliambulatorio Torino</span>
+    <span class="strip-item">Centro Medico Firenze</span>
+    <span class="strip-item">Studio Ortopedico Bologna</span>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════
+     STATS
+══════════════════════════ -->
+<section class="stats-section" id="numeri">
+  <div class="w">
+    <div class="stats-grid">
+      <div class="stat-col fu">
+        <div class="stat-n" data-target="230" data-suffix="+">0</div>
+        <div class="stat-d">Cliniche e studi medici ci hanno scelto in tutta Italia</div>
+      </div>
+      <div class="stat-col fu d1">
+        <div class="stat-n" data-target="21" data-suffix="+">0</div>
+        <div class="stat-d">Branche mediche specialistiche coperte su tutto il territorio nazionale</div>
+      </div>
+      <div class="stat-col fu d2">
+        <div class="stat-n" data-target="7" data-suffix=" gg">0</div>
+        <div class="stat-d">Per ricevere i primi pazienti qualificati dal lancio delle campagne</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════
+     MARQUEE SPECIALITÀ
+══════════════════════════ -->
+<div class="mq-wrap">
+  <div class="mq-track" id="mq">
+    <script>
+      const S=['Cardiologia','Ortopedia','Dermatologia','Odontoiatria','Ginecologia','Neurologia','Pediatria','Fisioterapia','Psicologia','Oculistica','Urologia','Gastroenterologia','Chirurgia Estetica','Radiologia','Medicina Sportiva','Nutrizione','Reumatologia','Otorinolaringoiatria','Endocrinologia','Andrologia','Psichiatria'];
+      const h=S.map(s=>`<span class="mq-item"><span class="mq-sep"></span>${s}</span>`).join('');
+      document.getElementById('mq').innerHTML=h+h;
+    </script>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════
+     APPROCCIO
+══════════════════════════ -->
+<section class="section" id="approccio">
+  <div class="w">
+    <div class="approach-grid">
+      <div class="fu">
+        <span class="label" style="display:block;margin-bottom:16px">Il nostro approccio</span>
+        <h2>Non un'agenzia.<br>Un partner verticale.</h2>
+        <p style="margin-top:20px;font-size:16px;color:var(--t2);line-height:1.8;max-width:420px">
+          La maggior parte delle agenzie gestisce qualsiasi settore. Noi lavoriamo esclusivamente con strutture mediche private italiane — da anni, con metodologie costruite su misura per questo mercato specifico.
+        </p>
+      </div>
+
+      <div class="approach-right fu d1">
+        <div class="approach-item">
+          <div class="approach-num">01</div>
+          <h3>Specializzazione verticale</h3>
+          <p>Solo medicina privata, nessun altro settore. Conosciamo le sfide operative, le normative vigenti e il linguaggio del paziente italiano meglio di qualsiasi generalista.</p>
+        </div>
+        <div class="approach-item">
+          <div class="approach-num">02</div>
+          <h3>Risultati interamente tracciabili</h3>
+          <p>Ogni campagna produce dati misurabili. Dashboard dedicata, report cadenzati, KPI concordati prima del lancio. Nessuna vaghezza, solo numeri reali.</p>
+        </div>
+        <div class="approach-item">
+          <div class="approach-num">03</div>
+          <h3>Conformità normativa totale</h3>
+          <p>Team legale interno specializzato in diritto sanitario. GDPR, Codice di Deontologia Medica e normative AGCM rispettati in ogni singola campagna, senza eccezioni.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════
+     SERVIZI
+══════════════════════════ -->
+<section class="section" id="servizi">
+  <div class="w">
+    <div class="section-head fu">
+      <span class="label">Servizi</span>
+      <h2>Un ecosistema completo<br>per la crescita del tuo studio.</h2>
+    </div>
+
+    <div class="svc-grid">
+
+      <div class="svc-cell fu">
+        <div class="svc-ico">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        </div>
+        <h3>Acquisizione pazienti</h3>
+        <p>Campagne Google Ads e Meta ottimizzate per generare richieste di appuntamento da pazienti con intenzione reale nella tua area geografica e specializzazione.</p>
+      </div>
+
+      <div class="svc-cell fu d1">
+        <div class="svc-ico">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <h3>Analytics in tempo reale</h3>
+        <p>Pannello dedicato con metriche live: nuovi pazienti, costo per acquisizione, ROI campagne, trend mensili. Ogni euro investito è tracciato e giustificato.</p>
+      </div>
+
+      <div class="svc-cell fu d2">
+        <div class="svc-ico">
+          <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <h3>Reputazione online</h3>
+        <p>Strategia sistematica per aumentare le recensioni positive su Google, Doctoralia e le principali directory sanitarie italiane. La reputazione digitale è il primo punto di contatto con il paziente.</p>
+      </div>
+
+      <div class="svc-cell fu">
+        <div class="svc-ico">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
+        </div>
+        <h3>Ottimizzazione Google Business</h3>
+        <p>Profilo Google Business ottimizzato, schede sulle directory mediche rilevanti, local SEO per dominare le ricerche geolocalizzate per specializzazione e città.</p>
+      </div>
+
+      <div class="svc-cell fu d1">
+        <div class="svc-ico">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.68A2 2 0 012 1.18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        </div>
+        <h3>Follow-up e fidelizzazione</h3>
+        <p>Sequenze automatizzate di follow-up, reminder appuntamenti e campagne di riattivazione. Il lifetime value di ogni paziente acquisito si moltiplica nel tempo con il giusto sistema.</p>
+      </div>
+
+      <div class="svc-cell fu d2">
+        <div class="svc-ico">
+          <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h3>Compliance normativa</h3>
+        <p>Validazione legale di ogni campagna prima del lancio. Rispetto del Codice Deontologico, delle linee guida AGCM sulla pubblicità sanitaria e del GDPR in ogni attività promozionale.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════
+     RISULTATI
+══════════════════════════ -->
+<section class="section" id="risultati">
+  <div class="w">
+    <div class="section-head fu">
+      <span class="label">Risultati documentati</span>
+      <h2>Numeri reali.<br>Strutture reali.</h2>
+      <p>Ogni caso è documentato con dati tracciati e verificabili dalla struttura stessa.</p>
+    </div>
+
+    <div class="cases-grid">
+
+      <div class="case-card fu">
+        <div class="case-spec">Ortopedia · Milano</div>
+        <div class="case-name">Studio Ortopedico, 3 chirurghi</div>
+        <p class="case-ctx">Nessuna presenza digitale strutturata. Crescita esclusivamente da referenze ospedaliere.</p>
+        <div class="case-metrics">
+          <div class="case-row">
+            <span class="case-row-label">Prenotazioni online</span>
+            <span class="case-row-val">+187%</span>
+          </div>
+          <div class="case-row">
+            <span class="case-row-label">Costo per paziente acquisito</span>
+            <span class="case-row-val">−58%</span>
+          </div>
+          <div class="case-row">
+            <span class="case-row-label">ROI sul budget campagne</span>
+            <span class="case-row-val">7.4×</span>
+          </div>
+        </div>
+        <div class="case-footer">Risultati documentati in 90 giorni</div>
+      </div>
+
+      <div class="case-card fu d1">
+        <div class="case-spec">Poliambulatorio · Roma</div>
+        <div class="case-name">8 specializzazioni, budget allocato senza tracciamento</div>
+        <p class="case-ctx">Campagne attive da 2 anni, nessun sistema di attribuzione dei pazienti alle campagne.</p>
+        <div class="case-metrics">
+          <div class="case-row">
+            <span class="case-row-label">Nuovi pazienti/mese qualificati</span>
+            <span class="case-row-val">+94</span>
+          </div>
+          <div class="case-row">
+            <span class="case-row-label">Tasso di conversione richieste</span>
+            <span class="case-row-val">+340%</span>
+          </div>
+          <div class="case-row">
+            <span class="case-row-label">ROI complessivo</span>
+            <span class="case-row-val">8.3×</span>
+          </div>
+        </div>
+        <div class="case-footer">Risultati documentati in 60 giorni</div>
+      </div>
+
+      <div class="case-card fu d2">
+        <div class="case-spec">Dermatologia · Napoli</div>
+        <div class="case-name">Clinica avviata di recente, mercato saturo</div>
+        <p class="case-ctx">Nessuna base digitale, mercato dermatologico ad alta concorrenza, budget contenuto.</p>
+        <div class="case-metrics">
+          <div class="case-row">
+            <span class="case-row-label">Richieste di appuntamento</span>
+            <span class="case-row-val">+230</span>
+          </div>
+          <div class="case-row">
+            <span class="case-row-label">Recensioni Google acquisite</span>
+            <span class="case-row-val">+67</span>
+          </div>
+          <div class="case-row">
+            <span class="case-row-label">Costo per paziente</span>
+            <span class="case-row-val">€ 14</span>
+          </div>
+        </div>
+        <div class="case-footer">Risultati documentati in 45 giorni</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════
+     SPECIALIZZAZIONI
+══════════════════════════ -->
+<section class="section" id="specializzazioni">
+  <div class="w">
+    <div class="spec-layout">
+      <div class="fu">
+        <span class="label" style="display:block;margin-bottom:20px">Copertura</span>
+        <span class="spec-big-num" data-target="21" data-suffix="+">0</span>
+        <p class="spec-big-sub">
+          Branche mediche specialistiche coperte. Se la tua specializzazione esiste, abbiamo già la strategia.
+        </p>
+      </div>
+      <div class="spec-cloud fu d1">
+        <div class="spec-tag">Cardiologia</div>
+        <div class="spec-tag">Ortopedia</div>
+        <div class="spec-tag">Dermatologia</div>
+        <div class="spec-tag">Odontoiatria</div>
+        <div class="spec-tag">Ginecologia</div>
+        <div class="spec-tag">Neurologia</div>
+        <div class="spec-tag">Pediatria</div>
+        <div class="spec-tag">Fisioterapia</div>
+        <div class="spec-tag">Psicologia</div>
+        <div class="spec-tag">Oculistica</div>
+        <div class="spec-tag">Urologia</div>
+        <div class="spec-tag">Gastroenterologia</div>
+        <div class="spec-tag">Chirurgia Estetica</div>
+        <div class="spec-tag">Radiologia</div>
+        <div class="spec-tag">Medicina Sportiva</div>
+        <div class="spec-tag">Nutrizione</div>
+        <div class="spec-tag">Reumatologia</div>
+        <div class="spec-tag">Otorinolaringoiatria</div>
+        <div class="spec-tag">Endocrinologia</div>
+        <div class="spec-tag">Andrologia</div>
+        <div class="spec-tag">Psichiatria</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════
+     TESTIMONIANZE
+══════════════════════════ -->
+<section class="section">
+  <div class="w">
+    <div class="section-head center fu">
+      <span class="label">Testimonianze</span>
+      <h2 style="text-align:center">Chi lavora con noi.</h2>
+    </div>
+
+    <div class="testi-grid">
+
+      <div class="testi-card fu">
+        <div class="stars-row">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="testi-q">"In tre mesi abbiamo raddoppiato le prenotazioni per la cardiologia. Quello che mi ha convinto non sono state le promesse, ma la dashboard: vedo ogni giorno esattamente quanti pazienti arrivano e da quale campagna."</p>
+        <div class="testi-author">
+          <div class="testi-av" style="background:linear-gradient(135deg,#05E9B5,#00867A)">RM</div>
+          <div>
+            <div class="testi-name">Dr. Roberto Mancini</div>
+            <div class="testi-role">Cardiologo — Roma</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card fu d1">
+        <div class="stars-row">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="testi-q">"Finalmente qualcuno che conosce le specificità normative del settore sanitario. Nessun'altra agenzia mi aveva mai parlato concretamente di deontologia medica e compliance. I risultati sono arrivati in dieci giorni."</p>
+        <div class="testi-author">
+          <div class="testi-av" style="background:linear-gradient(135deg,#7C3AED,#05E9B5)">CE</div>
+          <div>
+            <div class="testi-name">Dott.ssa Chiara Esposito</div>
+            <div class="testi-role">Dermatologa — Milano</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testi-card fu d2">
+        <div class="stars-row">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <p class="testi-q">"Gestisco tre studi ortopedici in Lombardia. Il vantaggio è che ogni sede ha una strategia indipendente ma coordinata. Il ROI medio sulle tre strutture si attesta attorno a 7.4×, un dato che non immaginavo possibile."</p>
+        <div class="testi-author">
+          <div class="testi-av" style="background:linear-gradient(135deg,#059669,#05E9B5)">LF</div>
+          <div>
+            <div class="testi-name">Dr. Luca Ferrari</div>
+            <div class="testi-role">Ortopedico — Lombardia</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════
+     ESCLUSIVITÀ
+══════════════════════════ -->
+<section class="excl-section">
+  <div class="w">
+    <div class="excl-grid">
+      <div class="fu">
+        <span class="label" style="display:block;margin-bottom:16px">Con chi lavoriamo</span>
+        <h2>Non siamo adatti<br>a tutti. <span class="text-mint">Preferiamo<br>dirtelo subito.</span></h2>
+        <p style="margin-top:22px">
+          Prima di avviare qualsiasi collaborazione valutiamo che esistano le condizioni per un risultato misurabile. Questo ci permette di lavorare con standard elevati per ogni struttura che seguiamo — e di non fare promesse che non possiamo mantenere.
+        </p>
+      </div>
+      <div class="excl-criteria fu d1">
+        <div class="excl-item">
+          <div class="excl-check">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span class="excl-item-text">Almeno un professionista dedicato con agenda da riempire</span>
+        </div>
+        <div class="excl-item">
+          <div class="excl-check">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span class="excl-item-text">Disponibilità a lavorare con dati, metriche e un processo strutturato</span>
+        </div>
+        <div class="excl-item">
+          <div class="excl-check">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span class="excl-item-text">Obiettivi chiari e un budget coerente con i risultati attesi</span>
+        </div>
+        <div class="excl-item">
+          <div class="excl-check">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <span class="excl-item-text">Una struttura — piccola o grande — che vuole crescere in modo sistematico</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════
+     CANDIDATURA
+══════════════════════════ -->
+<section class="form-section" id="candidatura">
+  <div class="w">
+    <div class="form-layout">
+
+      <!-- LEFT: context -->
+      <div class="form-sticky fu">
+        <span class="label" style="display:block;margin-bottom:16px">Candidatura</span>
+        <h2>Dicci chi sei.<br>Valutiamo <span class="text-mint">insieme.</span></h2>
+        <p style="margin-top:20px">
+          Compila il questionario. Quando premi il pulsante, le tue risposte arrivano direttamente al nostro team via WhatsApp — ti risponderemo entro 24 ore con una valutazione del tuo progetto.
+        </p>
+        <div class="form-note">
+          <strong>Come funziona la valutazione</strong>
+          Analizziamo ogni candidatura singolarmente. Se riteniamo di non essere il partner giusto per il tuo studio in questo momento, te lo diciamo chiaramente — senza perdere il tuo tempo.
+        </div>
+      </div>
+
+      <!-- RIGHT: form -->
+      <div class="fu d1">
+        <form class="q-form" onsubmit="sendWA(event)">
+
+          <div class="q-row">
+            <div class="q-group">
+              <label class="q-label" for="q-studio">Nome dello studio / clinica *</label>
+              <input class="q-input" id="q-studio" type="text" placeholder="Es. Studio Medico Rossi" required/>
+            </div>
+            <div class="q-group">
+              <label class="q-label" for="q-nome">Il tuo nome *</label>
+              <input class="q-input" id="q-nome" type="text" placeholder="Nome e cognome" required/>
+            </div>
+          </div>
+
+          <div class="q-group">
+            <label class="q-label" for="q-spec">Quale/i prestazione/i offrite? *</label>
+            <input class="q-input" id="q-spec" type="text" placeholder="Es. Cardiologia, Ortopedia, Fisioterapia…" required/>
+          </div>
+
+          <div class="q-row">
+            <div class="q-group">
+              <label class="q-label" for="q-team">Quanti professionisti siete?</label>
+              <select class="q-select" id="q-team">
+                <option value="" disabled selected>Seleziona</option>
+                <option>Solo io</option>
+                <option>2 – 5</option>
+                <option>6 – 15</option>
+                <option>Più di 15</option>
+              </select>
+            </div>
+            <div class="q-group">
+              <label class="q-label" for="q-obj">Qual è il vostro obiettivo?</label>
+              <select class="q-select" id="q-obj">
+                <option value="" disabled selected>Seleziona</option>
+                <option>Aumentare i pazienti</option>
+                <option>Ridurre il costo di acquisizione</option>
+                <option>Costruire presenza digitale</option>
+                <option>Scalare su più sedi</option>
+                <option>Sostituire il passaparola</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="q-divider"></div>
+
+          <div class="q-group">
+            <label class="q-label" for="q-mkt">Avete già investito in promozione o marketing?</label>
+            <select class="q-select" id="q-mkt">
+              <option value="" disabled selected>Seleziona</option>
+              <option>No, mai</option>
+              <option>Sì, in passato — senza risultati convincenti</option>
+              <option>Sì, attualmente — ma voglio migliorare</option>
+              <option>Sì, attualmente — e funziona bene</option>
+            </select>
+          </div>
+
+          <div class="q-group">
+            <label class="q-label" for="q-budget">Budget mensile disponibile per la promozione</label>
+            <select class="q-select" id="q-budget">
+              <option value="" disabled selected>Seleziona</option>
+              <option>Meno di 500 €</option>
+              <option>500 – 1.000 €</option>
+              <option>1.000 – 2.500 €</option>
+              <option>2.500 – 5.000 €</option>
+              <option>Oltre 5.000 €</option>
+            </select>
+          </div>
+
+          <button type="submit" class="q-submit">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.998 0C5.372 0 0 5.373 0 12.004c0 2.117.554 4.104 1.523 5.832L.057 23.007a.75.75 0 00.921.921l5.227-1.461A11.942 11.942 0 0011.998 24C18.626 24 24 18.627 24 12.004 24 5.373 18.626 0 11.998 0zm0 21.998a9.952 9.952 0 01-5.058-1.377l-.362-.215-3.104.868.882-3.026-.236-.374A9.947 9.947 0 012.002 12.004C2.002 6.478 6.474 2.002 11.998 2.002S21.998 6.478 21.998 12.004c0 5.524-4.472 9.994-10 9.994z"/></svg>
+            Invia candidatura su WhatsApp
+          </button>
+          <p class="q-required">* Campi obbligatori — le risposte vengono inviate direttamente al nostro team</p>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════
+     CALENDARIO
+══════════════════════════ -->
+<section class="cal-section" id="calendario">
+  <div class="w">
+    <div class="cal-layout">
+      <div class="cal-left fu">
+        <span class="label" style="display:block;margin-bottom:16px">Prenota una chiamata</span>
+        <h2>Preferisci<br>parlarci <span class="text-mint">direttamente?</span></h2>
+        <p style="margin-top:18px">
+          Scegli il giorno e l'orario che preferisci. La chiamata dura 30 minuti — analizziamo insieme la situazione del tuo studio e capiamo se possiamo aiutarti.
+        </p>
+      </div>
+      <div class="cal-embed-wrap fu d1">
+        <!-- ════════════════════════════════════════
+             INCOLLA QUI IL TUO CODICE EMBED
+             (Calendly, Cal.com, TidyCal, ecc.)
+
+             Esempio Calendly:
+             <div class="calendly-inline-widget"
+                  data-url="https://calendly.com/TUO-LINK"
+                  style="min-width:320px;height:580px;"></div>
+             <script src="https://assets.calendly.com/assets/external/widget.js"></script>
+             ════════════════════════════════════════ -->
+        <div class="cal-placeholder">
+          <div class="cal-placeholder-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <h3>Calendario non ancora configurato</h3>
+          <p>Incolla il codice embed del tuo calendario (Calendly, Cal.com, ecc.) al posto di questo blocco nel file HTML.</p>
+          <code>id="calendario"</code>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════
+     FAQ
+══════════════════════════ -->
+<section class="section" id="faq">
+  <div class="ws">
+    <div class="section-head center fu" style="margin-bottom:0">
+      <span class="label">FAQ</span>
+      <h2 style="text-align:center">Domande.</h2>
+    </div>
+    <div class="faq-list" style="margin-top:56px">
+
+      <div class="faq-item fu">
+        <div class="faq-q" onclick="tfaq(this)">
+          <span>In quanto tempo si vedono i primi risultati?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-ans">
+          <div class="faq-ans-inner">Le prime richieste di appuntamento da pazienti qualificati arrivano tipicamente entro 7–14 giorni dal lancio. La progressione dipende dalla specializzazione, dal territorio e dal budget allocato. I risultati crescono in modo sistematico nelle settimane successive man mano che i dati reali alimentano le ottimizzazioni.</div>
+        </div>
+      </div>
+
+      <div class="faq-item fu d1">
+        <div class="faq-q" onclick="tfaq(this)">
+          <span>Funziona per qualsiasi specializzazione medica?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-ans">
+          <div class="faq-ans-inner">Sì. Operiamo in oltre 21 branche: cardiologia, ortopedia, dermatologia, odontoiatria, ginecologia, neurologia, pediatria, fisioterapia, psicologia e molte altre. Ogni campagna è costruita specificamente per la specializzazione e il territorio — non utilizziamo template generici.</div>
+        </div>
+      </div>
+
+      <div class="faq-item fu d2">
+        <div class="faq-q" onclick="tfaq(this)">
+          <span>Come viene garantita la conformità normativa?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-ans">
+          <div class="faq-ans-inner">Il nostro team include figure legali specializzate in diritto sanitario. Ogni campagna viene validata prima del lancio in base al Codice di Deontologia Medica, alle linee guida AGCM sulla pubblicità sanitaria e al GDPR. La conformità non è opzionale: è strutturale al nostro processo.</div>
+        </div>
+      </div>
+
+      <div class="faq-item fu d3">
+        <div class="faq-q" onclick="tfaq(this)">
+          <span>Ci sono contratti a lungo termine?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-ans">
+          <div class="faq-ans-inner">No. Non utilizziamo contratti vincolanti. Il rapporto con i nostri clienti si fonda sui risultati, non su clausole legali. È possibile interrompere la collaborazione con un preavviso di 30 giorni, senza penali e senza vincoli di nessun tipo.</div>
+        </div>
+      </div>
+
+      <div class="faq-item fu d4">
+        <div class="faq-q" onclick="tfaq(this)">
+          <span>Come funziona il primo contatto?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-ans">
+          <div class="faq-ans-inner">Una prima conversazione di 30–40 minuti con uno dei nostri specialisti. Analizziamo la situazione attuale del tuo studio, il territorio, la specializzazione e il contesto competitivo. Al termine condividiamo una valutazione realistica del potenziale e un'ipotesi di piano operativo.</div>
+        </div>
+      </div>
+
+      <div class="faq-item fu">
+        <div class="faq-q" onclick="tfaq(this)">
+          <span>Qual è la struttura dei costi?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-ans">
+          <div class="faq-ans-inner">Costruiamo piani su misura in base alla dimensione dello studio, alla specializzazione e agli obiettivi definiti. Non esistono pacchetti standard. Il compenso è calibrato sul valore generato: il costo medio mensile corrisponde all'acquisizione di 3–5 nuovi pazienti, ampiamente recuperato nel primo mese dalla maggior parte delle strutture.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════
+     CTA FINALE
+══════════════════════════ -->
+<section class="cta-section" id="contatto">
+  <div class="cta-inner">
+    <span class="label fu" style="display:block;margin-bottom:20px">Iniziamo</span>
+    <h2 class="fu">
+      Il tuo studio<br>merita di crescere.<br>
+      <span class="text-mint">Sistematicamente.</span>
+    </h2>
+    <p class="fu d1">
+      Oltre 230 strutture mediche in Italia hanno scelto un approccio strutturato all'acquisizione pazienti. Parla con il nostro team per capire se PazientiSubito è il partner giusto per il tuo studio.
+    </p>
+    <div class="cta-actions fu d2">
+      <a href="https://pazientisubito.com" class="btn-primary">
+        Parliamo del tuo studio
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+    <p class="cta-note fu d3">Risposta entro 24 ore · Nessun impegno</p>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════
+     FOOTER
+══════════════════════════ -->
+<footer>
+  <div class="w">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/GcdgpbV6KX63qU9d1siH/media/685fbfae9aefd62c5fb05886.png"
+               alt="PazientiSubito"/>
+        </div>
+        <p class="footer-about">Partner di marketing sanitario specializzato esclusivamente nella crescita di cliniche e studi medici privati italiani.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Servizi</h4>
+        <ul>
+          <li><a href="#">Acquisizione pazienti</a></li>
+          <li><a href="#">Reputazione online</a></li>
+          <li><a href="#">Google Business</a></li>
+          <li><a href="#">Analytics</a></li>
+          <li><a href="#">Follow-up automatici</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Specializzazioni</h4>
+        <ul>
+          <li><a href="#">Cardiologia</a></li>
+          <li><a href="#">Ortopedia</a></li>
+          <li><a href="#">Dermatologia</a></li>
+          <li><a href="#">Odontoiatria</a></li>
+          <li><a href="#">Tutte le branche →</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Azienda</h4>
+        <ul>
+          <li><a href="#">Chi siamo</a></li>
+          <li><a href="#">Risultati</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Contatti</a></li>
+          <li><a href="#">Lavora con noi</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-copy">© 2026 PazientiSubito Srl · P.IVA IT12345678901</p>
+      <p class="footer-copy">Privacy Policy · Cookie Policy · GDPR</p>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ══════════════════════════
+     FLOATING WHATSAPP
+══════════════════════════ -->
+<div class="wa-float">
+  <span class="wa-badge">Valutiamo ogni candidatura</span>
+  <a class="wa-btn" id="wa-float-btn" href="#" target="_blank" rel="noopener" aria-label="Scrivici su WhatsApp">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+      <path d="M11.998 0C5.372 0 0 5.373 0 12.004c0 2.117.554 4.104 1.523 5.832L.057 23.007a.75.75 0 00.921.921l5.227-1.461A11.942 11.942 0 0011.998 24C18.626 24 24 18.627 24 12.004 24 5.373 18.626 0 11.998 0zm0 21.998a9.952 9.952 0 01-5.058-1.377l-.362-.215-3.104.868.882-3.026-.236-.374A9.947 9.947 0 012.002 12.004C2.002 6.478 6.474 2.002 11.998 2.002S21.998 6.478 21.998 12.004c0 5.524-4.472 9.994-10 9.994z"/>
+    </svg>
+  </a>
+</div>
+
+
+<!-- ══════════════════════════
+     JS
+══════════════════════════ -->
+<script>
+  /* ── Numero WhatsApp — modifica qui ── */
+  const WA_NUMBER = '39INSERISCI_NUMERO'; /* es. '393331234567' */
+
+  /* ── Nav scroll ── */
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () =>
+    nav.classList.toggle('stuck', window.scrollY > 20), {passive:true});
+
+  /* ── FAQ ── */
+  function tfaq(btn) {
+    const item = btn.parentElement;
+    const ans  = item.querySelector('.faq-ans');
+    const open = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.faq-ans').style.maxHeight = '0';
+    });
+    if (!open) {
+      item.classList.add('open');
+      ans.style.maxHeight = ans.scrollHeight + 'px';
+    }
+  }
+
+  /* ── Floating WA button (generico) ── */
+  const waMsg = 'Ciao PazientiSubito, vorrei saperne di più sui vostri servizi.';
+  document.getElementById('wa-float-btn').href =
+    'https://wa.me/' + WA_NUMBER + '?text=' + encodeURIComponent(waMsg);
+
+  /* ── Form → WhatsApp precompilato ── */
+  function sendWA(e) {
+    e.preventDefault();
+    const v = id => (document.getElementById(id).value || '—').trim();
+    const lines = [
+      'Candidatura PazientiSubito',
+      '',
+      'Studio / Clinica: '    + v('q-studio'),
+      'Responsabile: '        + v('q-nome'),
+      'Specializzazioni: '    + v('q-spec'),
+      'Professionisti: '      + v('q-team'),
+      'Obiettivo: '           + v('q-obj'),
+      'Esperienza marketing: '+ v('q-mkt'),
+      'Budget mensile: '      + v('q-budget'),
+    ];
+    const url = 'https://wa.me/' + WA_NUMBER +
+                '?text=' + encodeURIComponent(lines.join('\n'));
+    window.open(url, '_blank');
+  }
+
+  /* ── Animazione counter ── */
+  function count(el) {
+    const target = +el.dataset.target;
+    const suffix = el.dataset.suffix ?? '+';
+    const t0 = performance.now();
+    const run = now => {
+      const p = Math.min((now - t0) / 2000, 1);
+      const e = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.floor(e * target) + suffix;
+      if (p < 1) requestAnimationFrame(run);
+    };
+    requestAnimationFrame(run);
+  }
+
+  /* ── Intersection observers ── */
+  const io = new IntersectionObserver(entries =>
+    entries.forEach(({target, isIntersecting}) => {
+      if (!isIntersecting) return;
+      target.classList.add('vis'); io.unobserve(target);
+    }), {threshold: .12});
+
+  const ic = new IntersectionObserver(entries =>
+    entries.forEach(({target, isIntersecting}) => {
+      if (!isIntersecting || target.dataset.done) return;
+      target.dataset.done = '1'; count(target); ic.unobserve(target);
+    }), {threshold: .5});
+
+  document.querySelectorAll('.fu').forEach(el => io.observe(el));
+  document.querySelectorAll('[data-target]').forEach(el => ic.observe(el));
+</script>
+</body>
+</html>
