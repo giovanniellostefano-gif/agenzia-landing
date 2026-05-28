@@ -21,8 +21,8 @@
     --border:    rgba(255,255,255,.07);
     --border-s:  rgba(255,255,255,.04);
     --t1:        #E8EEFF;
-    --t2:        #5C6E90;
-    --t3:        #2F3C55;
+    --t2:        #B8C6D8;
+    --t3:        #7A8FA8;
     --green:     #10B981;
     --amber:     #F59E0B;
   }
@@ -142,7 +142,7 @@
   .nav-row {
     display:flex; align-items:center; justify-content:space-between;
   }
-  .nav-logo img { height:36px; display:block; }
+  .nav-logo img { height:52px; display:block; }
   .nav-links {
     display:flex; align-items:center; gap:36px; list-style:none;
   }
@@ -552,7 +552,7 @@
     display:grid; grid-template-columns:2fr 1fr 1fr 1fr;
     gap:56px; margin-bottom:52px;
   }
-  .footer-logo img { height:34px; display:block; margin-bottom:14px; }
+  .footer-logo img { height:56px; display:block; margin-bottom:14px; }
   .footer-about { font-size:14px; color:var(--t2); line-height:1.7; max-width:240px; }
   .footer-col h4 {
     font-size:11px; font-weight:700; letter-spacing:2px;
@@ -753,10 +753,544 @@
   @media(max-width:768px){
     .q-row { grid-template-columns:1fr; }
     .wa-float { bottom:20px; right:20px; }
+    .orb-ring { display:none; }
+    .hero-orbs { display:none; }
+  }
+
+  /* ═══════════════════════════════════
+     SCROLL PROGRESS BAR
+  ═══════════════════════════════════ */
+  #progress-bar {
+    position:fixed; top:0; left:0; z-index:9999;
+    height:2px; width:0%;
+    background:linear-gradient(90deg, var(--mint), var(--mint-dim));
+    transition:width .05s linear;
+    pointer-events:none;
+  }
+
+  /* ═══════════════════════════════════
+     CURSOR AMBIENT GLOW
+  ═══════════════════════════════════ */
+  #cursor-glow {
+    position:fixed; pointer-events:none; z-index:1;
+    width:380px; height:380px; border-radius:50%;
+    background:radial-gradient(circle, rgba(5,233,181,.045) 0%, transparent 65%);
+    transform:translate(-50%,-50%);
+    transition:opacity .4s;
+    mix-blend-mode:screen;
+    will-change:left,top;
+  }
+
+  /* ═══════════════════════════════════
+     ORBITAL RINGS — hero background
+  ═══════════════════════════════════ */
+  .hero-orbs {
+    position:absolute; inset:0;
+    pointer-events:none; overflow:hidden;
+  }
+  .orb-ring {
+    position:absolute;
+    border-radius:50%;
+    top:50%; left:62%;
+  }
+  .orb-1 {
+    width:460px; height:460px;
+    margin-top:-230px; margin-left:-230px;
+    border:1px solid rgba(5,233,181,.1);
+    animation:orb-cw 22s linear infinite;
+  }
+  .orb-2 {
+    width:700px; height:700px;
+    margin-top:-350px; margin-left:-350px;
+    border:1px solid rgba(5,233,181,.055);
+    animation:orb-ccw 36s linear infinite;
+  }
+  .orb-3 {
+    width:960px; height:960px;
+    margin-top:-480px; margin-left:-480px;
+    border:1px solid rgba(5,233,181,.025);
+    animation:orb-cw 54s linear infinite;
+  }
+  /* glowing dot on each ring */
+  .orb-ring::before {
+    content:''; position:absolute;
+    top:-4px; left:50%; transform:translateX(-50%);
+    width:8px; height:8px; border-radius:50%;
+    background:var(--mint);
+    box-shadow:0 0 14px 4px rgba(5,233,181,.65);
+  }
+  .orb-2::before {
+    top:auto; bottom:-3px; left:25%;
+    width:5px; height:5px;
+    background:rgba(255,255,255,.75);
+    box-shadow:0 0 8px 2px rgba(255,255,255,.35);
+  }
+  .orb-3::before {
+    top:50%; left:auto; right:-3px;
+    transform:translateY(-50%);
+    width:6px; height:6px;
+    background:var(--mint-dim);
+    box-shadow:0 0 10px 3px rgba(0,196,154,.5);
+  }
+  @keyframes orb-cw  { from{transform:rotate(0deg)}   to{transform:rotate(360deg)}  }
+  @keyframes orb-ccw { from{transform:rotate(0deg)}   to{transform:rotate(-360deg)} }
+
+  /* ═══════════════════════════════════
+     3D CARD TILT — CSS foundation
+  ═══════════════════════════════════ */
+  .svc-cell, .case-card, .testi-card,
+  .approach-item, .excl-item, .stat-block {
+    will-change:transform;
+    transform-style:preserve-3d;
+  }
+
+  /* ═══════════════════════════════════
+     STAT BLOCK GLOW BREATHE
+  ═══════════════════════════════════ */
+  .stat-n {
+    animation:stat-breathe 4s ease-in-out infinite;
+  }
+  .stat-block:nth-child(2) .stat-n { animation-delay:1.3s; }
+  .stat-block:nth-child(3) .stat-n { animation-delay:2.6s; }
+  @keyframes stat-breathe {
+    0%,100% { filter:brightness(1);   }
+    50%      { filter:brightness(1.18) drop-shadow(0 0 18px rgba(5,233,181,.35)); }
+  }
+
+  /* ═══════════════════════════════════
+     PRIMARY BUTTON SHINE SWEEP
+  ═══════════════════════════════════ */
+  .btn-primary { position:relative; overflow:hidden; }
+  .btn-primary::after {
+    content:''; position:absolute;
+    top:0; left:-100%; width:60%; height:100%;
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+    transform:skewX(-20deg);
+    transition:none;
+    pointer-events:none;
+  }
+  .btn-primary:hover::after {
+    animation:btn-shine .55s ease forwards;
+  }
+  @keyframes btn-shine {
+    from { left:-100%; }
+    to   { left:160%;  }
+  }
+
+  /* ═══════════════════════════════════
+     HERO BADGE FLOAT
+  ═══════════════════════════════════ */
+  .hero-badge {
+    animation:badge-float 3.5s ease-in-out infinite;
+  }
+  @keyframes badge-float {
+    0%,100% { transform:translateY(0);    }
+    50%      { transform:translateY(-5px); }
+  }
+
+  /* ═══════════════════════════════════
+     PACKAGES SECTION
+  ═══════════════════════════════════ */
+  .pkg-section { padding:130px 0; border-top:1px solid var(--border-s); }
+  .pkg-head { text-align:center; margin-bottom:72px; }
+  .pkg-head .label { display:block; margin-bottom:16px; }
+  .pkg-head p { font-size:17px; color:var(--t2); margin-top:16px; }
+
+  .pkg-grid {
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+    align-items:center;
+  }
+
+  /* CSS variable carries the featured offset so flip doesn't lose it */
+  .pkg-card {
+    --by: 0px;
+    background:rgba(10,15,28,.95);
+    border:1px solid var(--border);
+    border-radius:22px;
+    position:relative;
+    overflow:hidden;
+    transition: transform .22s cubic-bezier(.6,0,.4,1),
+                border-color .3s, box-shadow .3s;
+    transform: translateY(var(--by));
+  }
+  .pkg-card:hover {
+    border-color:rgba(5,233,181,.2);
+    box-shadow:0 24px 60px rgba(0,0,0,.35);
+  }
+  .pkg-card.featured {
+    --by: -18px;
+    border-color:rgba(5,233,181,.38);
+    box-shadow:0 32px 80px rgba(0,0,0,.4), 0 0 50px rgba(5,233,181,.08);
+  }
+  .pkg-card.featured:hover { --by:-22px; }
+
+  /* ── ribbon ── */
+  .pkg-ribbon {
+    position:absolute; top:18px; right:-1px;
+    background:var(--mint); color:#040A14;
+    font-size:10px; font-weight:800; letter-spacing:1.5px;
+    text-transform:uppercase; padding:5px 16px;
+    border-radius:4px 0 0 4px;
+  }
+
+    .pkg-card { padding:34px 30px 30px; display:flex; flex-direction:column; }
+
+  .pkg-tier {
+    font-size:10px; font-weight:700; letter-spacing:2.5px;
+    text-transform:uppercase; color:var(--t3); margin-bottom:12px;
+  }
+  .pkg-name { font-size:28px; font-weight:800; letter-spacing:-1px; margin-bottom:10px; }
+  .pkg-tag  { font-size:14px; color:var(--t2); line-height:1.65; margin-bottom:28px; }
+
+  .pkg-items {
+    list-style:none; display:flex; flex-direction:column;
+    gap:10px; margin-bottom:28px; flex:1;
+  }
+  .pkg-items li {
+    display:flex; align-items:flex-start; gap:10px;
+    font-size:13px; color:var(--t2); line-height:1.5;
+  }
+  .pkg-items li::before {
+    content:''; flex-shrink:0; margin-top:2px;
+    width:15px; height:15px; border-radius:50%;
+    background:rgba(5,233,181,.08) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 24 24' fill='none' stroke='%2305E9B5' stroke-width='3.5' stroke-linecap='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") no-repeat center;
+    border:1px solid rgba(5,233,181,.22);
+  }
+  .pkg-card.featured .pkg-items li::before {
+    background-color:rgba(5,233,181,.14); border-color:rgba(5,233,181,.4);
+  }
+
+  .pkg-cta {
+    display:flex; align-items:center; justify-content:center; gap:9px;
+    width:100%; padding:13px 20px; border-radius:10px;
+    font-size:14px; font-weight:700;
+    font-family:'Inter',system-ui,sans-serif;
+    cursor:pointer; transition:all .22s;
+    background:transparent; color:var(--t1); border:1px solid var(--border);
+  }
+  .pkg-card.featured .pkg-cta { background:var(--mint); color:#040A14; border-color:var(--mint); }
+  .pkg-cta:hover { border-color:rgba(5,233,181,.4); background:rgba(5,233,181,.07); }
+  .pkg-card.featured .pkg-cta:hover { background:#1DFFC5; }
+
+    /* ═══════════════════════════════════
+     MOBILE IMPROVEMENTS
+  ═══════════════════════════════════ */
+  @media(max-width:768px){
+    /* disable heavy canvas/rings on mobile */
+    #star-cv,#aurora-cv { display:none; }
+    #cd,#cr { display:none; }
+    .hero-badge { animation:none; }
+
+    /* packages */
+    .pkg-grid { grid-template-columns:1fr; }
+    .pkg-card.featured { transform:none; }
+    .pkg-card.featured:hover { transform:none; }
+
+    /* approach */
+    .approach-grid { grid-template-columns:1fr; gap:48px; }
+
+    /* services */
+    .svc-grid { grid-template-columns:1fr; }
+
+    /* cases */
+    .cases-grid { grid-template-columns:1fr; }
+
+    /* specs */
+    .spec-layout { grid-template-columns:1fr; gap:36px; }
+
+    /* hero rule stats */
+    .hero-rule { gap:16px; flex-wrap:wrap; }
+    .hero-rule-sep { display:none; }
+    .hero-rule-stat { min-width:45%; }
+
+    /* nav logo mobile */
+    .nav-logo img { height:40px; }
+
+    /* section padding reduced */
+    .section { padding:80px 0; }
+    .pkg-section { padding:80px 0; }
+    .stats-section { padding:80px 0; }
+    .cta-section { padding:100px 0; }
+
+    /* form */
+    .form-layout { grid-template-columns:1fr; gap:48px; }
+    .form-sticky { position:static; }
+
+    /* footer */
+    .footer-grid { grid-template-columns:1fr; gap:32px; }
+    .footer-bottom { flex-direction:column; text-align:center; gap:8px; }
+    footer { padding:48px 0 32px; }
+
+    /* story stage stacked */
+    .story-inner { flex-direction:column; padding:20px; gap:32px; justify-content:center; }
+    .story-right { width:100%; max-width:100%; }
+    .sd-card { padding:20px; }
+  }
+
+  /* ═══════════════════════════════════
+     SCROLL STORY — STICKY SECTION
+  ═══════════════════════════════════ */
+  .story-wrap {
+    height:260vh; position:relative;
+    border-top:1px solid var(--border-s);
+  }
+  .story-sticky {
+    position:sticky; top:0;
+    height:100vh; overflow:hidden;
+    background:var(--bg);
+  }
+  .story-glow {
+    position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(ellipse 70% 70% at 55% 50%,
+      rgba(5,233,181,.13) 0%, transparent 65%);
+    opacity:0; z-index:0;
+  }
+  .story-inner {
+    position:relative; z-index:2;
+    height:100%; max-width:1180px;
+    margin:0 auto; padding:0 36px;
+    display:flex; align-items:center; gap:64px;
+  }
+
+  /* LEFT — text phases */
+  .story-left {
+    width:380px; flex-shrink:0;
+    position:relative; height:320px;
+  }
+  .sp {
+    position:absolute; inset:0;
+    opacity:0; transform:translateY(22px);
+    transition:opacity .55s ease, transform .55s ease;
+    pointer-events:none;
+  }
+  .sp.sp-active {
+    opacity:1; transform:none; pointer-events:auto;
+  }
+  .sp .label  { display:block; margin-bottom:14px; }
+  .sp .sp-h   {
+    font-size:clamp(34px,4vw,52px);
+    font-weight:700; letter-spacing:-2px; line-height:1.07;
+    margin-bottom:18px; color:var(--t1);
+  }
+  .sp-3 .sp-h {
+    font-size:clamp(50px,7vw,80px);
+    letter-spacing:-3.5px; line-height:.96;
+  }
+  .sp p { font-size:15px; color:var(--t2); line-height:1.78; }
+
+  /* RIGHT — dashboard */
+  .story-right { flex:1; max-width:540px; }
+  .sd-card {
+    background:rgba(10,15,28,.97);
+    border:1px solid var(--border);
+    border-radius:20px; padding:26px;
+    box-shadow:0 40px 90px rgba(0,0,0,.55),
+               0 0 60px rgba(5,233,181,.05);
+    will-change:transform,opacity;
+    opacity:0; transform:scale(.84);
+  }
+  .sd-head {
+    display:flex; align-items:center; justify-content:space-between;
+    padding-bottom:16px; margin-bottom:20px;
+    border-bottom:1px solid var(--border-s);
+  }
+  .sd-title { font-size:12px; font-weight:600; color:var(--t2); }
+  .sd-live {
+    display:flex; align-items:center; gap:6px;
+    font-size:11px; font-weight:700; color:var(--green);
+    background:rgba(16,185,129,.1);
+    border:1px solid rgba(16,185,129,.25);
+    padding:4px 11px; border-radius:100px;
+  }
+  .sd-dot {
+    width:5px; height:5px; border-radius:50%;
+    background:var(--green); animation:pdot 2s infinite;
+  }
+
+  /* Chart bars */
+  .sd-chart {
+    height:120px; display:flex; align-items:flex-end;
+    gap:7px; padding:0 2px; margin-bottom:10px;
+    position:relative;
+  }
+  .sd-chart::before {
+    content:''; position:absolute; inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px);
+    background-size:100% 25%; pointer-events:none;
+  }
+  .sd-bar-col {
+    flex:1; height:100%;
+    display:flex; flex-direction:column; justify-content:flex-end;
+  }
+  .sd-bar {
+    width:100%; border-radius:3px 3px 0 0;
+    will-change:height,background; min-height:3px;
+  }
+  .sd-days {
+    display:flex; justify-content:space-around;
+    margin-bottom:20px;
+  }
+  .sd-days span {
+    font-size:9px; font-weight:600;
+    color:var(--t3); text-transform:uppercase; letter-spacing:.5px;
+  }
+
+  /* Metrics */
+  .sd-metrics {
+    display:grid; grid-template-columns:repeat(3,1fr);
+    gap:10px; margin-bottom:18px;
+  }
+  .sd-metric {
+    background:var(--surface); border:1px solid var(--border-s);
+    border-radius:11px; padding:13px 10px; text-align:center;
+  }
+  .sd-mval {
+    font-size:21px; font-weight:800;
+    letter-spacing:-1px; color:var(--t1);
+    margin-bottom:4px; will-change:contents;
+  }
+  .sd-mlbl {
+    font-size:9px; font-weight:700; color:var(--t3);
+    text-transform:uppercase; letter-spacing:1px;
+  }
+
+  /* Patients list */
+  .sd-plist { display:flex; flex-direction:column; gap:7px; }
+  .sd-prow {
+    display:flex; align-items:center; justify-content:space-between;
+    background:var(--surface); border:1px solid var(--border-s);
+    border-radius:9px; padding:9px 13px;
+  }
+  .sd-pinfo { display:flex; align-items:center; gap:9px; }
+  .sd-pav {
+    width:26px; height:26px; border-radius:50%;
+    background:linear-gradient(135deg,var(--mint),var(--teal));
+    display:flex; align-items:center; justify-content:center;
+    font-size:9px; font-weight:800; flex-shrink:0;
+  }
+  .sd-pname  { font-size:12px; font-weight:600; }
+  .sd-pspec  { font-size:10px; color:var(--t3); }
+  .sd-ptime  { font-size:11px; font-weight:600; color:var(--mint2); }
+
+  /* Progress + scroll hint */
+  .sd-ptrack {
+    height:2px; background:var(--border-s);
+    border-radius:1px; margin-top:18px; overflow:hidden;
+  }
+  .sd-pfill {
+    height:100%; width:0%;
+    background:linear-gradient(90deg,var(--mint),var(--mint2));
+    border-radius:1px; will-change:width;
+  }
+  .story-hint {
+    position:absolute; bottom:28px; left:50%;
+    transform:translateX(-50%);
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+    z-index:10; pointer-events:none;
+    animation:badge-float 2.4s ease-in-out infinite;
+  }
+  .story-hint span {
+    font-size:10px; font-weight:700; letter-spacing:2.5px;
+    text-transform:uppercase; color:var(--t3);
+  }
+  .story-hint svg { color:var(--t3); }
+
+  @media(max-width:1024px){
+    .story-wrap  { height:180vh; }
+    .story-left  { display:none; }
+    .story-inner { justify-content:center; }
+    .story-right { max-width:100%; }
+  }
+  @media(max-width:768px){
+    .story-wrap { height:150vh; }
+    .sd-card    { padding:20px; }
+  }
+
+  /* ═══════════════════════════════════
+     CUSTOM CURSOR
+  ═══════════════════════════════════ */
+  @media(pointer:fine){
+    *{ cursor:none !important; }
+  }
+  #cd,#cr{
+    position:fixed; border-radius:50%;
+    pointer-events:none; z-index:999999;
+    transform:translate(-50%,-50%);
+    top:-100px; left:-100px;
+    opacity:0; transition:opacity .3s;
+  }
+  #cd{
+    width:6px; height:6px;
+    background:var(--mint);
+    transition:opacity .3s, width .2s, height .2s, background .2s;
+  }
+  #cr{
+    width:36px; height:36px;
+    border:1.5px solid rgba(5,233,181,.5);
+    transition:opacity .3s, width .3s cubic-bezier(.16,1,.3,1),
+               height .3s cubic-bezier(.16,1,.3,1), border-color .3s;
+  }
+  html.cu-on  #cd{ opacity:1; }
+  html.cu-on  #cr{ opacity:1; }
+  html.cu-hov #cd{ width:9px; height:9px; }
+  html.cu-hov #cr{ width:58px; height:58px; border-color:rgba(5,233,181,.22); }
+  html.cu-dn  #cr{ width:20px; height:20px;
+                   transition:width .06s, height .06s; }
+
+  /* ═══════════════════════════════════
+     CANVAS LAYERS IN HERO
+  ═══════════════════════════════════ */
+  #aurora-cv{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    pointer-events:none; z-index:0;
+    opacity:.85;
+  }
+  #star-cv{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    pointer-events:none; z-index:2;
+  }
+
+  /* ═══════════════════════════════════
+     RIPPLE
+  ═══════════════════════════════════ */
+  @keyframes ripple-out{
+    from{ width:0; height:0; opacity:.35; }
+    to  { width:200px; height:200px; opacity:0; }
+  }
+
+  /* ═══════════════════════════════════
+     HERO H1 LINE REVEAL — override fu
+  ═══════════════════════════════════ */
+  .hero h1{ opacity:1 !important; transform:none !important; }
+  .h1-mask{ display:block; overflow:hidden; line-height:1.08; }
+  .h1-inner{
+    display:block;
+    transform:translateY(108%);
+    transition:transform .82s cubic-bezier(.16,1,.3,1);
+  }
+
+  /* section headings word-reveal */
+  .wr-word{
+    display:inline-block; overflow:hidden;
+    vertical-align:bottom; margin-right:.22em;
+  }
+  .wr-inner{
+    display:inline-block;
+    transform:translateY(100%);
+    transition:transform .7s cubic-bezier(.16,1,.3,1);
+    opacity:1;
   }
   </style>
 </head>
 <body>
+
+<!-- custom cursor -->
+<div id="cd"></div>
+<div id="cr"></div>
 
 <!-- ══════════════════════════
      NAVIGATION
@@ -765,7 +1299,7 @@
   <div class="w nav-row">
     <a href="#">
       <img src="https://images.leadconnectorhq.com/image/f_webp/q_80/r_1200/u_https://assets.cdn.filesafe.space/GcdgpbV6KX63qU9d1siH/media/685fbfae9aefd62c5fb05886.png"
-           alt="PazientiSubito" style="height:36px;display:block"/>
+           alt="PazientiSubito" style="height:52px;display:block"/>
     </a>
     <ul class="nav-links">
       <li><a href="#approccio">Approccio</a></li>
@@ -782,31 +1316,41 @@
 <!-- ══════════════════════════
      HERO
 ══════════════════════════ -->
+<div id="progress-bar"></div>
+
 <section class="hero">
+  <div class="hero-orbs" aria-hidden="true">
+    <canvas id="aurora-cv"></canvas>
+    <div class="orb-ring orb-1"></div>
+    <div class="orb-ring orb-2"></div>
+    <div class="orb-ring orb-3"></div>
+    <canvas id="star-cv"></canvas>
+  </div>
   <div class="w hero-inner">
     <div class="hero-badge fu">
       <span class="pulse-dot"></span>
-      Partner certificato per la medicina privata italiana
+      Specializzati in medicina privata italiana
     </div>
 
     <h1 class="fu">
-      Promozione medica<br>
-      di <span class="text-mint">precisione.</span>
+      Pazienti qualificati.<br>
+      Metodo <span class="text-mint">misurabile.</span>
     </h1>
 
     <p class="hero-sub fu d1">
-      PazientiSubito affianca cliniche e studi medici privati con strategie
-      di acquisizione pazienti su misura, interamente misurabili
-      e conformi a ogni normativa sanitaria vigente.
+      Supportiamo strutture mediche private, studi monoprofessionali,
+      poliambulatori e cliniche specialistiche con strategie di acquisizione
+      pazienti documentate e scalabili.                                            Conformi a ogni normativa sanitaria,
+      costruite su un unico settore: la medicina privata italiana.
     </p>
 
     <div class="hero-actions fu d2">
-      <a href="#contatto" class="btn-primary">
-        Parlaci del tuo studio
+      <a href="#candidatura" class="btn-primary">
+        Inizia la valutazione
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
       <a href="#risultati" class="btn-link">
-        Vedi i risultati
+        Casi Studio
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
     </div>
@@ -814,7 +1358,7 @@
     <div class="hero-rule fu d3">
       <div class="hero-rule-stat">
         <div class="hero-rule-num"><em>230</em>+</div>
-        <div class="hero-rule-lbl">Strutture mediche</div>
+        <div class="hero-rule-lbl">Realtà Mediche</div>
       </div>
       <div class="hero-rule-sep"></div>
       <div class="hero-rule-stat">
@@ -823,7 +1367,7 @@
       </div>
       <div class="hero-rule-sep"></div>
       <div class="hero-rule-stat">
-        <div class="hero-rule-num"><em>7</em> gg</div>
+        <div class="hero-rule-num"><em>3</em> gg</div>
         <div class="hero-rule-lbl">Ai primi risultati</div>
       </div>
       <div class="hero-rule-sep"></div>
@@ -834,22 +1378,6 @@
     </div>
   </div>
 </section>
-
-
-<!-- ══════════════════════════
-     CLIENT STRIP
-══════════════════════════ -->
-<div class="strip">
-  <p class="strip-label">Tra le strutture che ci hanno scelto</p>
-  <div class="strip-row">
-    <span class="strip-item">Clinica Roma Sud</span>
-    <span class="strip-item">Studio Medico Milano</span>
-    <span class="strip-item">Centro Salute Napoli</span>
-    <span class="strip-item">Poliambulatorio Torino</span>
-    <span class="strip-item">Centro Medico Firenze</span>
-    <span class="strip-item">Studio Ortopedico Bologna</span>
-  </div>
-</div>
 
 
 <!-- ══════════════════════════
@@ -867,9 +1395,111 @@
         <div class="stat-d">Branche mediche specialistiche coperte su tutto il territorio nazionale</div>
       </div>
       <div class="stat-col fu d2">
-        <div class="stat-n" data-target="7" data-suffix=" gg">0</div>
-        <div class="stat-d">Per ricevere i primi pazienti qualificati dal lancio delle campagne</div>
+        <div class="stat-n" data-target="3" data-suffix=" ">0</div>
+        <div class="stat-d">Giorni per ricevere i primi potenziali pazienti qualificati dal lancio delle campagne</div>
       </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════
+     SCROLL STORY
+══════════════════════════ -->
+<section class="story-wrap" id="story">
+  <div class="story-sticky">
+    <div class="story-glow" id="story-glow"></div>
+    <div class="story-inner">
+
+      <!-- LEFT: text phases -->
+      <div class="story-left">
+        <div class="sp sp-1" id="sp1">
+          <span class="label">Prima di PazientiSubito</span>
+          <p class="sp-h">Crescita<br>imprevedibile.</p>
+          <p>La maggior parte degli studi non sa quanti pazienti arriveranno il mese prossimo. Non è un problema di qualità, ma un problema di processo.</p>
+        </div>
+        <div class="sp sp-2" id="sp2">
+          <span class="label">Il sistema in azione</span>
+          <p class="sp-h">Ogni variabile<br>sotto controllo.</p>
+          <p>Campagne ottimizzate, tracciamento preciso, ottimizzazione continua sui dati reali. Il flusso di pazienti diventa prevedibile come un orologio.</p>
+        </div>
+        <div class="sp sp-3" id="sp3">
+          <span class="label">Studio Ortopedico · Milano · 90 giorni</span>
+          <p class="sp-h">+187%<br>prenotazioni.</p>
+          <p>Da 12 a 35 pazienti a settimana. Costo per acquisizione da €165 a €14. ROI: 8.3×.</p>
+        </div>
+      </div>
+
+      <!-- RIGHT: dashboard -->
+      <div class="story-right">
+        <div class="sd-card" id="sd-card">
+
+          <div class="sd-head">
+            <span class="sd-title">Studio Analytics — Pazienti / settimana</span>
+            <span class="sd-live"><span class="sd-dot"></span>Live</span>
+          </div>
+
+          <div class="sd-chart">
+            <div class="sd-bar-col"><div class="sd-bar" id="sb0"></div></div>
+            <div class="sd-bar-col"><div class="sd-bar" id="sb1"></div></div>
+            <div class="sd-bar-col"><div class="sd-bar" id="sb2"></div></div>
+            <div class="sd-bar-col"><div class="sd-bar" id="sb3"></div></div>
+            <div class="sd-bar-col"><div class="sd-bar" id="sb4"></div></div>
+            <div class="sd-bar-col"><div class="sd-bar" id="sb5"></div></div>
+            <div class="sd-bar-col"><div class="sd-bar" id="sb6"></div></div>
+          </div>
+          <div class="sd-days">
+            <span>Lun</span><span>Mar</span><span>Mer</span>
+            <span>Gio</span><span>Ven</span><span>Sab</span><span>Dom</span>
+          </div>
+
+          <div class="sd-metrics">
+            <div class="sd-metric">
+              <div class="sd-mval" id="sdm1">12</div>
+              <div class="sd-mlbl">Paz./settimana</div>
+            </div>
+            <div class="sd-metric">
+              <div class="sd-mval" id="sdm2">€165</div>
+              <div class="sd-mlbl">Costo/paziente</div>
+            </div>
+            <div class="sd-metric">
+              <div class="sd-mval" id="sdm3">1.2×</div>
+              <div class="sd-mlbl">ROI campagne</div>
+            </div>
+          </div>
+
+          <div class="sd-plist">
+            <div class="sd-prow">
+              <div class="sd-pinfo">
+                <div class="sd-pav">ML</div>
+                <div><div class="sd-pname">Marco L.</div><div class="sd-pspec">Ortopedia</div></div>
+              </div>
+              <span class="sd-ptime">Oggi 14:30</span>
+            </div>
+            <div class="sd-prow">
+              <div class="sd-pinfo">
+                <div class="sd-pav" style="background:linear-gradient(135deg,#7C3AED,#05E9B5)">SF</div>
+                <div><div class="sd-pname">Sara F.</div><div class="sd-pspec">Osteopata</div></div>
+              </div>
+              <span class="sd-ptime">14:50</span>
+            </div>
+            <div class="sd-prow">
+              <div class="sd-pinfo">
+                <div class="sd-pav" style="background:linear-gradient(135deg,#059669,#05E9B5)">GT</div>
+                <div><div class="sd-pname">Giovanni T.</div><div class="sd-pspec">Clinica Estetica</div></div>
+              </div>
+              <span class="sd-ptime">15:15</span>
+            </div>
+          </div>
+
+          <div class="sd-ptrack"><div class="sd-pfill" id="sd-pf"></div></div>
+        </div>
+      </div>
+
+    </div>
+    <div class="story-hint" id="story-hint">
+      <span>Scorri</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
     </div>
   </div>
 </section>
@@ -897,9 +1527,9 @@
     <div class="approach-grid">
       <div class="fu">
         <span class="label" style="display:block;margin-bottom:16px">Il nostro approccio</span>
-        <h2>Non un'agenzia.<br>Un partner verticale.</h2>
+        <h2>Non siamo un'agenzia,<br>ma un partner.</h2>
         <p style="margin-top:20px;font-size:16px;color:var(--t2);line-height:1.8;max-width:420px">
-          La maggior parte delle agenzie gestisce qualsiasi settore. Noi lavoriamo esclusivamente con strutture mediche private italiane — da anni, con metodologie costruite su misura per questo mercato specifico.
+          Lavoriamo esclusivamente in ambito medico privato. Le metodologie che utilizziamo non sono state adattate da altri settori: sono state costruite su questo mercato, con le sue specificità normative, competitive e di comportamento del paziente.
         </p>
       </div>
 
@@ -907,17 +1537,17 @@
         <div class="approach-item">
           <div class="approach-num">01</div>
           <h3>Specializzazione verticale</h3>
-          <p>Solo medicina privata, nessun altro settore. Conosciamo le sfide operative, le normative vigenti e il linguaggio del paziente italiano meglio di qualsiasi generalista.</p>
+          <p>Solo medicina privata, nessun altro settore. Ogni variabile operativa, normativa e comunicativa che gestiamo è specifica di questo mercato, non una generalizzazione applicata a caso.</p>
         </div>
         <div class="approach-item">
           <div class="approach-num">02</div>
           <h3>Risultati interamente tracciabili</h3>
-          <p>Ogni campagna produce dati misurabili. Dashboard dedicata, report cadenzati, KPI concordati prima del lancio. Nessuna vaghezza, solo numeri reali.</p>
+          <p>KPI definiti prima del lancio, dashboard dedicata, report mensili. Ogni investimento è tracciato e il suo rendimento è sempre verificabile.</p>
         </div>
         <div class="approach-item">
           <div class="approach-num">03</div>
           <h3>Conformità normativa totale</h3>
-          <p>Team legale interno specializzato in diritto sanitario. GDPR, Codice di Deontologia Medica e normative AGCM rispettati in ogni singola campagna, senza eccezioni.</p>
+          <p>Figure legali specializzate in diritto sanitario integrate nel processo. GDPR, Codice Deontologico e normative AGCM sono vincoli strutturali di ogni campagna.</p>
         </div>
       </div>
     </div>
@@ -932,7 +1562,7 @@
   <div class="w">
     <div class="section-head fu">
       <span class="label">Servizi</span>
-      <h2>Un ecosistema completo<br>per la crescita del tuo studio.</h2>
+      <h2>Tutto il necessario<br>per crescere.</h2>
     </div>
 
     <div class="svc-grid">
@@ -958,7 +1588,7 @@
           <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
         </div>
         <h3>Reputazione online</h3>
-        <p>Strategia sistematica per aumentare le recensioni positive su Google, Doctoralia e le principali directory sanitarie italiane. La reputazione digitale è il primo punto di contatto con il paziente.</p>
+        <p>Strategia sistematica per aumentare le recensioni positive su Google. La reputazione digitale è il primo punto di contatto con il paziente.</p>
       </div>
 
       <div class="svc-cell fu">
@@ -966,7 +1596,7 @@
           <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>
         </div>
         <h3>Ottimizzazione Google Business</h3>
-        <p>Profilo Google Business ottimizzato, schede sulle directory mediche rilevanti, local SEO per dominare le ricerche geolocalizzate per specializzazione e città.</p>
+        <p>Profilo Google Business ottimizzato, SEO per dominare le ricerche locali.</p>
       </div>
 
       <div class="svc-cell fu d1">
@@ -997,8 +1627,8 @@
   <div class="w">
     <div class="section-head fu">
       <span class="label">Risultati documentati</span>
-      <h2>Numeri reali.<br>Strutture reali.</h2>
-      <p>Ogni caso è documentato con dati tracciati e verificabili dalla struttura stessa.</p>
+      <h2>Numeri reali.<br></h2>
+      <p>Ogni caso è documentato e tracciato.</p>
     </div>
 
     <div class="cases-grid">
@@ -1021,7 +1651,7 @@
             <span class="case-row-val">7.4×</span>
           </div>
         </div>
-        <div class="case-footer">Risultati documentati in 90 giorni</div>
+        <div class="case-footer">Risultati documentati in 97 giorni</div>
       </div>
 
       <div class="case-card fu d1">
@@ -1042,7 +1672,7 @@
             <span class="case-row-val">8.3×</span>
           </div>
         </div>
-        <div class="case-footer">Risultati documentati in 60 giorni</div>
+        <div class="case-footer">Risultati documentati in 61 giorni</div>
       </div>
 
       <div class="case-card fu d2">
@@ -1063,7 +1693,7 @@
             <span class="case-row-val">€ 14</span>
           </div>
         </div>
-        <div class="case-footer">Risultati documentati in 45 giorni</div>
+        <div class="case-footer">Risultati documentati in 42 giorni</div>
       </div>
 
     </div>
@@ -1081,7 +1711,7 @@
         <span class="label" style="display:block;margin-bottom:20px">Copertura</span>
         <span class="spec-big-num" data-target="21" data-suffix="+">0</span>
         <p class="spec-big-sub">
-          Branche mediche specialistiche coperte. Se la tua specializzazione esiste, abbiamo già la strategia.
+          Branche mediche specialistiche trattate. Qualunque sia la tua specializzazione, abbiamo già la strategia.
         </p>
       </div>
       <div class="spec-cloud fu d1">
@@ -1136,7 +1766,7 @@
         <div class="testi-author">
           <div class="testi-av" style="background:linear-gradient(135deg,#05E9B5,#00867A)">RM</div>
           <div>
-            <div class="testi-name">Dr. Roberto Mancini</div>
+            <div class="testi-name">Dr. R. M.</div>
             <div class="testi-role">Cardiologo — Roma</div>
           </div>
         </div>
@@ -1150,11 +1780,11 @@
           <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
           <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
         </div>
-        <p class="testi-q">"Finalmente qualcuno che conosce le specificità normative del settore sanitario. Nessun'altra agenzia mi aveva mai parlato concretamente di deontologia medica e compliance. I risultati sono arrivati in dieci giorni."</p>
+        <p class="testi-q">"Finalmente qualcuno che conosce le specificità normative del settore sanitario. Nessun'altra agenzia mi aveva mai parlato concretamente di deontologia medica e compliance. I risultati sono arrivati in un paio di settimane."</p>
         <div class="testi-author">
           <div class="testi-av" style="background:linear-gradient(135deg,#7C3AED,#05E9B5)">CE</div>
           <div>
-            <div class="testi-name">Dott.ssa Chiara Esposito</div>
+            <div class="testi-name">Dott.ssa C. E.</div>
             <div class="testi-role">Dermatologa — Milano</div>
           </div>
         </div>
@@ -1172,7 +1802,7 @@
         <div class="testi-author">
           <div class="testi-av" style="background:linear-gradient(135deg,#059669,#05E9B5)">LF</div>
           <div>
-            <div class="testi-name">Dr. Luca Ferrari</div>
+            <div class="testi-name">Dr. L. F.</div>
             <div class="testi-role">Ortopedico — Lombardia</div>
           </div>
         </div>
@@ -1191,9 +1821,9 @@
     <div class="excl-grid">
       <div class="fu">
         <span class="label" style="display:block;margin-bottom:16px">Con chi lavoriamo</span>
-        <h2>Non siamo adatti<br>a tutti. <span class="text-mint">Preferiamo<br>dirtelo subito.</span></h2>
+        <h2>Selezioniamo<br>le strutture con cui <span class="text-mint">lavoriamo.</span></h2>
         <p style="margin-top:22px">
-          Prima di avviare qualsiasi collaborazione valutiamo che esistano le condizioni per un risultato misurabile. Questo ci permette di lavorare con standard elevati per ogni struttura che seguiamo — e di non fare promesse che non possiamo mantenere.
+          Ogni collaborazione inizia con una valutazione del tuo progetto. Lavoriamo con strutture per cui possiamo generare un risultato concreto, non ha senso per noi avviare un rapporto di collaborazione senza i pre-requisiti necessari.
         </p>
       </div>
       <div class="excl-criteria fu d1">
@@ -1201,30 +1831,31 @@
           <div class="excl-check">
             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
-          <span class="excl-item-text">Almeno un professionista dedicato con agenda da riempire</span>
+          <span class="excl-item-text">Una struttura con capacità reale di accogliere nuovi pazienti</span>
         </div>
         <div class="excl-item">
           <div class="excl-check">
             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
-          <span class="excl-item-text">Disponibilità a lavorare con dati, metriche e un processo strutturato</span>
+          <span class="excl-item-text">Apertura a un approccio basato su dati e la volontà di investire nella loro crescita.</span>
         </div>
         <div class="excl-item">
           <div class="excl-check">
             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
-          <span class="excl-item-text">Obiettivi chiari e un budget coerente con i risultati attesi</span>
+          <span class="excl-item-text">Obiettivi definiti e risorse adeguate al mercato di riferimento</span>
         </div>
         <div class="excl-item">
           <div class="excl-check">
             <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
-          <span class="excl-item-text">Una struttura — piccola o grande — che vuole crescere in modo sistematico</span>
+          <span class="excl-item-text">Visione strategica: costruire un sistema di crescita, non eseguire una campagna fine a sè stessa</span>
         </div>
       </div>
     </div>
   </div>
 </section>
+
 
 
 <!-- ══════════════════════════
@@ -1237,13 +1868,13 @@
       <!-- LEFT: context -->
       <div class="form-sticky fu">
         <span class="label" style="display:block;margin-bottom:16px">Candidatura</span>
-        <h2>Dicci chi sei.<br>Valutiamo <span class="text-mint">insieme.</span></h2>
+        <h2>Il primo passo<br>è <span class="text-mint">conoscersi.</span></h2>
         <p style="margin-top:20px">
-          Compila il questionario. Quando premi il pulsante, le tue risposte arrivano direttamente al nostro team via WhatsApp — ti risponderemo entro 24 ore con una valutazione del tuo progetto.
+          Compila il questionario. Le risposte arrivano direttamente al nostro team, valuteremo il tuo progetto e riceverai Risposta entro qualche ora.
         </p>
         <div class="form-note">
-          <strong>Come funziona la valutazione</strong>
-          Analizziamo ogni candidatura singolarmente. Se riteniamo di non essere il partner giusto per il tuo studio in questo momento, te lo diciamo chiaramente — senza perdere il tuo tempo.
+          <strong>Come funziona</strong>
+          Valutiamo ogni progetto individualmente. Se non siamo il partner adatto per il tuo studio in questa fase, te lo diciamo subito.
         </div>
       </div>
 
@@ -1320,7 +1951,7 @@
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.998 0C5.372 0 0 5.373 0 12.004c0 2.117.554 4.104 1.523 5.832L.057 23.007a.75.75 0 00.921.921l5.227-1.461A11.942 11.942 0 0011.998 24C18.626 24 24 18.627 24 12.004 24 5.373 18.626 0 11.998 0zm0 21.998a9.952 9.952 0 01-5.058-1.377l-.362-.215-3.104.868.882-3.026-.236-.374A9.947 9.947 0 012.002 12.004C2.002 6.478 6.474 2.002 11.998 2.002S21.998 6.478 21.998 12.004c0 5.524-4.472 9.994-10 9.994z"/></svg>
             Invia candidatura su WhatsApp
           </button>
-          <p class="q-required">* Campi obbligatori — le risposte vengono inviate direttamente al nostro team</p>
+          <p class="q-required">* Campi obbligatori: le risposte vengono inviate direttamente al nostro team</p>
 
         </form>
       </div>
@@ -1340,28 +1971,12 @@
         <span class="label" style="display:block;margin-bottom:16px">Prenota una chiamata</span>
         <h2>Preferisci<br>parlarci <span class="text-mint">direttamente?</span></h2>
         <p style="margin-top:18px">
-          Scegli il giorno e l'orario che preferisci. La chiamata dura 30 minuti — analizziamo insieme la situazione del tuo studio e capiamo se possiamo aiutarti.
+          Scegli il giorno e l'orario che preferisci. Ti dedicheremo 30 minuti per analizzare insieme la situazione del tuo studio e capire se ci sono i pre-requisiti per collaborare.
         </p>
       </div>
-      <div class="cal-embed-wrap fu d1">
-        <!-- ════════════════════════════════════════
-             INCOLLA QUI IL TUO CODICE EMBED
-             (Calendly, Cal.com, TidyCal, ecc.)
-
-             Esempio Calendly:
-             <div class="calendly-inline-widget"
-                  data-url="https://calendly.com/TUO-LINK"
-                  style="min-width:320px;height:580px;"></div>
-             <script src="https://assets.calendly.com/assets/external/widget.js"></script>
-             ════════════════════════════════════════ -->
-        <div class="cal-placeholder">
-          <div class="cal-placeholder-icon">
-            <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          </div>
-          <h3>Calendario non ancora configurato</h3>
-          <p>Incolla il codice embed del tuo calendario (Calendly, Cal.com, ecc.) al posto di questo blocco nel file HTML.</p>
-          <code>id="calendario"</code>
-        </div>
+      <div class="cal-embed-wrap fu d1" style="display:block;padding:0;background:transparent;border:none;min-height:auto">
+        <iframe src="https://api.leadconnectorhq.com/widget/booking/dOhjGLzDoqLm6tQGNpko" style="width:100%;border:none;overflow:hidden;min-height:680px;display:block;" scrolling="no" id="dOhjGLzDoqLm6tQGNpko_1779885523690"></iframe>
+        <script src="https://link.msgsndr.com/js/form_embed.js" type="text/javascript"></script>
       </div>
     </div>
   </div>
@@ -1375,7 +1990,7 @@
   <div class="ws">
     <div class="section-head center fu" style="margin-bottom:0">
       <span class="label">FAQ</span>
-      <h2 style="text-align:center">Domande.</h2>
+      <h2 style="text-align:center">Domande Frequenti.</h2>
     </div>
     <div class="faq-list" style="margin-top:56px">
 
@@ -1395,7 +2010,7 @@
           <span class="faq-icon">+</span>
         </div>
         <div class="faq-ans">
-          <div class="faq-ans-inner">Sì. Operiamo in oltre 21 branche: cardiologia, ortopedia, dermatologia, odontoiatria, ginecologia, neurologia, pediatria, fisioterapia, psicologia e molte altre. Ogni campagna è costruita specificamente per la specializzazione e il territorio — non utilizziamo template generici.</div>
+          <div class="faq-ans-inner">Sì. Operiamo in oltre 21 branche: cardiologia, ortopedia, dermatologia, odontoiatria, ginecologia, neurologia, pediatria, fisioterapia, psicologia e molte altre. Ogni campagna è costruita specificamente per la specializzazione e il territorio, non utilizziamo template generici.</div>
         </div>
       </div>
 
@@ -1415,7 +2030,7 @@
           <span class="faq-icon">+</span>
         </div>
         <div class="faq-ans">
-          <div class="faq-ans-inner">No. Non utilizziamo contratti vincolanti. Il rapporto con i nostri clienti si fonda sui risultati, non su clausole legali. È possibile interrompere la collaborazione con un preavviso di 30 giorni, senza penali e senza vincoli di nessun tipo.</div>
+          <div class="faq-ans-inner">No. Non utilizziamo contratti pluriennali. Il nostro primo rapporto di lavoro dura tipicamente 90 giorni</div>
         </div>
       </div>
 
@@ -1425,7 +2040,7 @@
           <span class="faq-icon">+</span>
         </div>
         <div class="faq-ans">
-          <div class="faq-ans-inner">Una prima conversazione di 30–40 minuti con uno dei nostri specialisti. Analizziamo la situazione attuale del tuo studio, il territorio, la specializzazione e il contesto competitivo. Al termine condividiamo una valutazione realistica del potenziale e un'ipotesi di piano operativo.</div>
+          <div class="faq-ans-inner">Ti dedicheremo 30–40 minuti con uno dei nostri specialisti. Analizziamo la situazione attuale del tuo studio, il territorio, la specializzazione e il contesto competitivo. Al termine riceverai una valutazione realistica del potenziale del tuo progetto.</div>
         </div>
       </div>
 
@@ -1435,7 +2050,7 @@
           <span class="faq-icon">+</span>
         </div>
         <div class="faq-ans">
-          <div class="faq-ans-inner">Costruiamo piani su misura in base alla dimensione dello studio, alla specializzazione e agli obiettivi definiti. Non esistono pacchetti standard. Il compenso è calibrato sul valore generato: il costo medio mensile corrisponde all'acquisizione di 3–5 nuovi pazienti, ampiamente recuperato nel primo mese dalla maggior parte delle strutture.</div>
+          <div class="faq-ans-inner">Costruiamo piani su misura in base alla dimensione dello studio, alla specializzazione e agli obiettivi definiti. Non esistono pacchetti standard. Il compenso è calibrato sul valore generato.</div>
         </div>
       </div>
 
@@ -1449,21 +2064,21 @@
 ══════════════════════════ -->
 <section class="cta-section" id="contatto">
   <div class="cta-inner">
-    <span class="label fu" style="display:block;margin-bottom:20px">Iniziamo</span>
+    <span class="label fu" style="display:block;margin-bottom:20px"></span>
     <h2 class="fu">
-      Il tuo studio<br>merita di crescere.<br>
-      <span class="text-mint">Sistematicamente.</span>
+      Non si cresce<br>per caso.<br>
+      <span class="text-mint">È una scelta.</span>
     </h2>
     <p class="fu d1">
-      Oltre 230 strutture mediche in Italia hanno scelto un approccio strutturato all'acquisizione pazienti. Parla con il nostro team per capire se PazientiSubito è il partner giusto per il tuo studio.
+      Oltre 230 strutture mediche private, studi monoprofessionali, poliambulatori, cliniche specialistiche hanno scelto un metodo misurabile per crescere. Inizia da qui per capire se sei un candidato ideale.
     </p>
     <div class="cta-actions fu d2">
-      <a href="https://pazientisubito.com" class="btn-primary">
-        Parliamo del tuo studio
+      <a href="#candidatura" class="btn-primary">
+        Inizia la valutazione
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
     </div>
-    <p class="cta-note fu d3">Risposta entro 24 ore · Nessun impegno</p>
+    <p class="cta-note fu d3">Risposta entro qualche ora</p>
   </div>
 </section>
 
@@ -1513,7 +2128,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p class="footer-copy">© 2026 PazientiSubito Srl · P.IVA IT12345678901</p>
+      <p class="footer-copy">© 2026 PazientiSubito</p>
       <p class="footer-copy">Privacy Policy · Cookie Policy · GDPR</p>
     </div>
   </div>
@@ -1524,7 +2139,7 @@
      FLOATING WHATSAPP
 ══════════════════════════ -->
 <div class="wa-float">
-  <span class="wa-badge">Valutiamo ogni candidatura</span>
+  <span class="wa-badge">Hai bisogno di Informazioni?</span>
   <a class="wa-btn" id="wa-float-btn" href="#" target="_blank" rel="noopener" aria-label="Scrivici su WhatsApp">
     <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
       <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
@@ -1539,7 +2154,7 @@
 ══════════════════════════ -->
 <script>
   /* ── Numero WhatsApp — modifica qui ── */
-  const WA_NUMBER = '39INSERISCI_NUMERO'; /* es. '393331234567' */
+  const WA_NUMBER = '393408969919'; /* es. '393331234567' */
 
   /* ── Nav scroll ── */
   const nav = document.getElementById('nav');
@@ -1615,6 +2230,361 @@
 
   document.querySelectorAll('.fu').forEach(el => io.observe(el));
   document.querySelectorAll('[data-target]').forEach(el => ic.observe(el));
+
+  /* ════════════════════════════════════════
+     CUSTOM CURSOR
+  ════════════════════════════════════════ */
+  (function(){
+    if(!window.matchMedia('(pointer:fine)').matches) return;
+    const dot = document.getElementById('cd');
+    const ring= document.getElementById('cr');
+    if(!dot||!ring) return;
+    let mx=-200,my=-200,rx=-200,ry=-200;
+
+    document.addEventListener('mousemove', e=>{
+      mx=e.clientX; my=e.clientY;
+      document.documentElement.classList.add('cu-on');
+    });
+    document.addEventListener('mouseleave',()=>document.documentElement.classList.remove('cu-on'));
+    document.addEventListener('mousedown', ()=>document.documentElement.classList.add('cu-dn'));
+    document.addEventListener('mouseup',   ()=>document.documentElement.classList.remove('cu-dn'));
+
+    const HOVER_SEL='a,button,[onclick],.svc-cell,.case-card,.testi-card,.faq-q,.spec-tag,.excl-item,.nav-cta,.btn-primary,.btn-ghost,.btn-link';
+    document.querySelectorAll(HOVER_SEL).forEach(el=>{
+      el.addEventListener('mouseenter',()=>document.documentElement.classList.add('cu-hov'));
+      el.addEventListener('mouseleave',()=>document.documentElement.classList.remove('cu-hov'));
+    });
+
+    (function loop(){
+      rx+=(mx-rx)*.11; ry+=(my-ry)*.11;
+      dot.style.left=mx+'px'; dot.style.top=my+'px';
+      ring.style.left=rx+'px'; ring.style.top=ry+'px';
+      requestAnimationFrame(loop);
+    })();
+  })();
+
+  /* ════════════════════════════════════════
+     AURORA CANVAS
+  ════════════════════════════════════════ */
+  (function(){
+    const cv=document.getElementById('aurora-cv');
+    if(!cv) return;
+    const ctx=cv.getContext('2d');
+    let W,H,t=0;
+    const blobs=[
+      {px:.55,py:.15,sx:.00035,sy:.00025,col:'5,233,181',a:.06},
+      {px:.75,py:.55,sx:-.00028,sy:.00038,col:'0,134,122',a:.045},
+      {px:.35,py:.75,sx:.00018,sy:-.0003,col:'5,220,160',a:.035},
+      {px:.8, py:.2, sx:-.00015,sy:.00022,col:'0,160,200',a:.028},
+    ];
+    function resize(){
+      W=cv.width =cv.offsetWidth;
+      H=cv.height=cv.offsetHeight;
+    }
+    function run(){
+      t++;
+      ctx.clearRect(0,0,W,H);
+      blobs.forEach(b=>{
+        const cx=(b.px+Math.sin(t*b.sx*900+b.sy*400)*.22)*W;
+        const cy=(b.py+Math.cos(t*b.sy*900+b.sx*400)*.17)*H;
+        const r=W*.46;
+        const g=ctx.createRadialGradient(cx,cy,0,cx,cy,r);
+        g.addColorStop(0,  `rgba(${b.col},${b.a})`);
+        g.addColorStop(.45,`rgba(${b.col},${b.a*.35})`);
+        g.addColorStop(1,  `rgba(${b.col},0)`);
+        ctx.fillStyle=g;
+        ctx.fillRect(0,0,W,H);
+      });
+      requestAnimationFrame(run);
+    }
+    resize();
+    window.addEventListener('resize',resize);
+    run();
+  })();
+
+  /* ════════════════════════════════════════
+     PARTICLE CONSTELLATION
+  ════════════════════════════════════════ */
+  (function(){
+    const cv=document.getElementById('star-cv');
+    if(!cv) return;
+    const ctx=cv.getContext('2d');
+    let W,H,pts=[],mx=-999,my=-999;
+    const N=58, LINK=118;
+
+    function resize(){
+      W=cv.width =cv.offsetWidth;
+      H=cv.height=cv.offsetHeight;
+      pts=Array.from({length:N},()=>({
+        x:Math.random()*W, y:Math.random()*H,
+        vx:(Math.random()-.5)*.42,
+        vy:(Math.random()-.5)*.42,
+      }));
+    }
+
+    document.addEventListener('mousemove',e=>{
+      const r=cv.getBoundingClientRect();
+      mx=e.clientX-r.left; my=e.clientY-r.top;
+    });
+
+    function run(){
+      ctx.clearRect(0,0,W,H);
+      pts.forEach(p=>{
+        p.x+=p.vx; p.y+=p.vy;
+        if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+        if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+        const dx=p.x-mx, dy=p.y-my;
+        const d=Math.hypot(dx,dy);
+        if(d<110){
+          const f=(110-d)/110*.13;
+          p.vx+=(dx/d)*f; p.vy+=(dy/d)*f;
+        }
+        const spd=Math.hypot(p.vx,p.vy);
+        if(spd>1.3){p.vx*=.94;p.vy*=.94;}
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,1.4,0,Math.PI*2);
+        ctx.fillStyle='rgba(5,233,181,.42)';
+        ctx.fill();
+      });
+      for(let i=0;i<pts.length-1;i++){
+        for(let j=i+1;j<pts.length;j++){
+          const d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);
+          if(d<LINK){
+            ctx.beginPath();
+            ctx.moveTo(pts[i].x,pts[i].y);
+            ctx.lineTo(pts[j].x,pts[j].y);
+            ctx.strokeStyle=`rgba(5,233,181,${(1-d/LINK)*.16})`;
+            ctx.lineWidth=.55;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(run);
+    }
+    resize();
+    window.addEventListener('resize',resize);
+    run();
+  })();
+
+  /* ════════════════════════════════════════
+     HERO H1 — MASKED LINE REVEAL
+  ════════════════════════════════════════ */
+  (function(){
+    const h1=document.querySelector('.hero h1');
+    if(!h1) return;
+    const raw=h1.innerHTML;
+    const lines=raw.split(/<br\s*\/?>/i);
+    h1.style.cssText='opacity:1;transform:none';
+    h1.innerHTML=lines.map((ln,i)=>
+      `<span class="h1-mask">
+         <span class="h1-inner" style="transition-delay:${.08+i*.17}s">${ln}</span>
+       </span>`
+    ).join('');
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+      h1.querySelectorAll('.h1-inner').forEach(el=>el.style.transform='translateY(0)');
+    }));
+  })();
+
+  /* ════════════════════════════════════════
+     SECTION HEADINGS — WORD REVEAL ON SCROLL
+  ════════════════════════════════════════ */
+  (function(){
+    document.querySelectorAll('h2').forEach(h2=>{
+      if(h2.closest('.hero')||h2.closest('.story-wrap')) return;
+      const html=h2.innerHTML;
+      // wrap words but keep existing HTML tags intact
+      h2.innerHTML=html.replace(/(<[^>]+>)|([^\s<]+)/g,(m,tag,word)=>{
+        if(tag) return tag;
+        return `<span class="wr-word"><span class="wr-inner">${word}</span></span>`;
+      });
+      h2._revealed=false;
+    });
+
+    const ioH=new IntersectionObserver(entries=>{
+      entries.forEach(({target,isIntersecting})=>{
+        if(!isIntersecting||target._revealed) return;
+        target._revealed=true;
+        target.querySelectorAll('.wr-inner').forEach((el,i)=>{
+          el.style.transitionDelay=`${i*.055}s`;
+          el.style.transform='translateY(0)';
+        });
+      });
+    },{threshold:.35});
+
+    document.querySelectorAll('h2').forEach(h=>ioH.observe(h));
+  })();
+
+  /* ════════════════════════════════════════
+     RIPPLE ON CLICK
+  ════════════════════════════════════════ */
+  document.querySelectorAll('.btn-primary,.btn-ghost,.nav-cta,.q-submit').forEach(btn=>{
+    btn.style.position='relative';
+    btn.style.overflow='hidden';
+    btn.addEventListener('click',function(e){
+      const r=this.getBoundingClientRect();
+      const x=e.clientX-r.left, y=e.clientY-r.top;
+      const rpl=document.createElement('span');
+      rpl.style.cssText=`position:absolute;border-radius:50%;
+        background:rgba(255,255,255,.22);pointer-events:none;
+        left:${x}px;top:${y}px;transform:translate(-50%,-50%);
+        animation:ripple-out .65s ease-out forwards;`;
+      this.appendChild(rpl);
+      setTimeout(()=>rpl.remove(),700);
+    });
+  });
+
+  /* ════════════════════════════════════════
+     SCROLL STORY — PINNED DASHBOARD
+  ════════════════════════════════════════ */
+  (function(){
+    const wrap  = document.getElementById('story');
+    const card  = document.getElementById('sd-card');
+    const pfill = document.getElementById('sd-pf');
+    const hint  = document.getElementById('story-hint');
+    const glow  = document.getElementById('story-glow');
+    if(!wrap||!card) return;
+
+    const B0=[18,22,20,24,21,17,19];   // before heights %
+    const B1=[24,38,52,63,74,86,100];  // after  heights %
+    const bars=[...Array(7)].map((_,i)=>document.getElementById('sb'+i));
+    const M1=document.getElementById('sdm1');
+    const M2=document.getElementById('sdm2');
+    const M3=document.getElementById('sdm3');
+    const PH=[document.getElementById('sp1'),
+              document.getElementById('sp2'),
+              document.getElementById('sp3')];
+
+    const lerp=(a,b,t)=>a+(b-a)*t;
+    const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+    const easeO=t=>1-Math.pow(1-t,3);
+    const easeIO=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+
+    let target=0, current=0, lastPh=-1;
+
+    window.addEventListener('scroll',()=>{
+      const r=wrap.getBoundingClientRect();
+      const h=wrap.offsetHeight-window.innerHeight;
+      target=clamp(-r.top/h,0,1);
+    },{passive:true});
+
+    function draw(p){
+      /* ── card enter ── */
+      const ep=easeO(clamp(p/.09,0,1));
+      card.style.transform=`scale(${lerp(.84,1,ep)})`;
+      card.style.opacity=String(ep);
+
+      /* ── progress bar inside card ── */
+      if(pfill) pfill.style.width=(p*100)+'%';
+
+      /* ── scroll hint fade ── */
+      if(hint) hint.style.opacity=String(clamp(1-p/.13,0,1));
+
+      /* ── background glow intensifies ── */
+      if(glow) glow.style.opacity=String(easeIO(clamp(p/.8,0,1))*.85);
+
+      /* ── transformation progress 30% → 75% of scroll ── */
+      const tp=easeIO(clamp((p-.30)/.45,0,1));
+
+      /* ── bars: height + color lerp grey→mint ── */
+      bars.forEach((bar,i)=>{
+        if(!bar) return;
+        const h=lerp(B0[i],B1[i],tp);
+        bar.style.height=h+'%';
+        const r2=Math.round(lerp(52,5,tp));
+        const g2=Math.round(lerp(72,233,tp));
+        const b2=Math.round(lerp(95,181,tp));
+        bar.style.background=
+          `linear-gradient(180deg,rgb(${r2},${g2},${b2}) 0%,rgba(${r2},${g2},${b2},.4) 100%)`;
+      });
+
+      /* ── metric numbers ── */
+      if(M1) M1.textContent=Math.round(lerp(12,35,tp));
+      if(M2) M2.textContent='€'+Math.round(lerp(165,14,tp));
+      if(M3) M3.textContent=lerp(1.2,8.3,tp).toFixed(1)+'×';
+
+      /* ── phase text ── */
+      const ph=p<.38?0:p<.72?1:2;
+      if(ph!==lastPh){
+        PH.forEach(el=>el&&el.classList.remove('sp-active'));
+        if(PH[ph]) PH[ph].classList.add('sp-active');
+        lastPh=ph;
+      }
+    }
+
+    /* smooth rAF loop */
+    (function loop(){
+      current+=(target-current)*.075;
+      draw(current);
+      requestAnimationFrame(loop);
+    })();
+
+    draw(0);
+  })();
+
+  /* ── Scroll progress bar ── */
+  const bar = document.getElementById('progress-bar');
+  window.addEventListener('scroll', () => {
+    const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight) * 100;
+    bar.style.width = pct + '%';
+  }, {passive:true});
+
+  /* ── Cursor ambient glow ── */
+  const glow = document.createElement('div');
+  glow.id = 'cursor-glow';
+  document.body.appendChild(glow);
+  let gx = -999, gy = -999;
+  document.addEventListener('mousemove', e => { gx = e.clientX; gy = e.clientY; });
+  (function animGlow() {
+    glow.style.left = gx + 'px';
+    glow.style.top  = gy + 'px';
+    requestAnimationFrame(animGlow);
+  })();
+
+  /* ── Hero parallax on scroll ── */
+  const heroOrbs = document.querySelector('.hero-orbs');
+  const heroInner = document.querySelector('.hero-inner');
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (y < window.innerHeight * 1.2) {
+      if (heroOrbs)  heroOrbs.style.transform  = `translateY(${y * 0.35}px)`;
+      if (heroInner) {
+        heroInner.style.transform = `translateY(${y * 0.12}px)`;
+        heroInner.style.opacity   = String(1 - y / (window.innerHeight * 0.85));
+      }
+    }
+  }, {passive:true});
+
+  /* ── 3D card tilt ── */
+  const TILT_CARDS = '.svc-cell,.case-card,.testi-card,.excl-item,.stat-block';
+  document.querySelectorAll(TILT_CARDS).forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width  - 0.5;
+      const y = (e.clientY - r.top)  / r.height - 0.5;
+      card.style.transition = 'transform .08s ease';
+      card.style.transform  =
+        `perspective(800px) rotateX(${-y * 7}deg) rotateY(${x * 7}deg) translateZ(8px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transition = 'transform .55s cubic-bezier(.16,1,.3,1)';
+      card.style.transform  = '';
+    });
+  });
+
+  /* ── Magnetic primary buttons ── */
+  document.querySelectorAll('.btn-primary').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const r = btn.getBoundingClientRect();
+      const x = (e.clientX - r.left - r.width  / 2) * 0.28;
+      const y = (e.clientY - r.top  - r.height / 2) * 0.28;
+      btn.style.transition = 'transform .1s ease, background .2s, box-shadow .2s';
+      btn.style.transform  = `translate(${x}px, ${y}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transition = 'transform .5s cubic-bezier(.16,1,.3,1), background .2s, box-shadow .2s';
+      btn.style.transform  = '';
+    });
+  });
 </script>
 </body>
 </html>
